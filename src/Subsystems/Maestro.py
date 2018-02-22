@@ -4,7 +4,7 @@ import sys
 import threading
 #import select
 
-PY2 = version_info[0] == 2  #Running Python 2.x?
+PY2 = version_info[0] == 2   #Running Python 2.x?
 
 #
 #---------------------------

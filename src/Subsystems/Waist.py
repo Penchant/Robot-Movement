@@ -1,26 +1,35 @@
+import threading
+import time
 # Waist is the subsystem focused on the control of the
 # mid section of the robot that rotates horizontally
 
 class Waist:
 
-	maxLeft = 45
-	maxRight = -45
+	left = 5000
+	center = 6000
+	right = 7500
 
 	def __init__(self, channel, controller):
 		self.channel = channel
 		self.controller = controller
-		self.angle = 0
+		self.angle = Waist.center
 		self.enable = False
 
 	def _execute(self, angle = None):
 		if angle is not None:
 			self.angle = angle
 		self.controller.setTarget(self.channel, self.angle)
-	def run(self):
-
-		# Create thread here
-		while(enable):
+	def loop(self):
+		while(self.enable):
 			self._execute()
+			time.sleep(.02)
+        def run(self):
+                self.enable = True
+                self.thread = threading.Thread(None, self.loop)
+                self.thread.start()
+	def disable(self):
+		self.enable = False
+		self.controller.setSpeed(self.channel, 0)
 
 	def _angleToPWM(self, angle):
 		while(angle > 180):

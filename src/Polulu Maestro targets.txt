@@ -1,0 +1,5 @@
+0 - waist 2000, 992, 1500 (L, R, Mid)
+1 -  forward and back 1500, 2000 max back, 992 max forward
+2 - turns  1750 left half, 1250 right half
+3 - horizontal head 1251, 2000, 992, 1080, 1740 (C, T, B, -45, +45)
+4 - vertical head

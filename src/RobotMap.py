@@ -1,17 +1,17 @@
-from lib.Maestro.py import Controller
+from Maestro import Controller
 
 # Define port mappings and create all hardware references, such as Maestro here
 
-class RobotMap
+class RobotMap:
 
 	controller = None
-	drivetrainLeftChannel = -1
-	drivetrainRightChannel = -2
-	waistChannel = -3
-	headHorizontalChannel = -4
-	headVerticalChannel = -5
+	drivetrainRotateChannel = 2
+	drivetrainForwardChannel = 1
+	waistChannel = 0
+	headHorizontalChannel = 3
+	headVerticalChannel = 4
 
 	@staticmethod
 	def init():
-		controller = Controller()
+		RobotMap.controller = Controller()
 
