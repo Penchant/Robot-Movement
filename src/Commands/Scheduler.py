@@ -1,5 +1,5 @@
-import Queue
-import TimedCommand
+from Queue import *
+from TimedCommand import TimedCommand
 import threading
 
 class Scheduler:
@@ -17,21 +17,23 @@ class Scheduler:
 	def addParallelCommand(self, command):
 		self.schedule.put(command)
 	def execute(self):
-		if (self.current_command == None or self.current_command.isFinished()):
+		if (self.current_command == None or self.current_command._isFinished()):
 				try:
 					self.current_command = self.schedule.get(True, None)
-					self.current_command_thread = threading.thread(None, self.current_command.run)
+					self.current_command_thread = threading.Thread(None, self.current_command.run)
 					self.current_command_thread.start()
 				except Empty:
 					pass
 	def loop(self):
 		while(self.enable):
 			self.execute()
-		if (not self.current_command == None) and (not self.current_command.isFinished)
+                complete = self.current_command._isFinished()
+		if ((self.current_command != None) and (complete == False)):
 			self.current_command.enable = False
 	def run(self):
 		self.enable = True
 		self.thread = threading.Thread(None, self.loop)
 		self.thread.start()
-		
+        def disable(self):
+                self.enable = False
 		

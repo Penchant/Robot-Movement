@@ -1,9 +1,9 @@
 
 
-class Command:
+class Command(object):
 	def __init__(self, time=0):
 		self.time = time
-		self.enable = True
+		self.enable = False
 		pass
 	# Initialization for the running of the command 
 	def _initialization(self):
@@ -23,10 +23,8 @@ class Command:
 		pass
 	# Runs the command
 	def run(self):
+                self.enable = True
 		self._initialization()
-		while(!self._isFinished() and self.enable):
-			if(stop):
-				self._interrupted()
-				break
-			self._execute()
-		self.end()
+		while(not self._isFinished() and self.enable == True):
+                        self._execute()
+		self._end()
