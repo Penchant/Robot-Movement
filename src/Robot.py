@@ -7,6 +7,8 @@ from OI import OI
 from Subsystems.Drivetrain import Drivetrain
 from Subsystems.Head import Head 
 from Subsystems.Waist import Waist
+from Commands.Scheduler import Scheduler
+from Commands.TestCommand import TestCommand
 
 
 # Robot is the main file that instantiantes all subsystems of the robot 
@@ -24,7 +26,7 @@ class Robot:
                         time.sleep(.1)
                         RobotMap.controller.setTarget(channel, 6000)
                         time.sleep(.1)
-                
+        self.scheduler = Scheduler()
 		self.subsystems = []
 
 		self.drivetrain = Drivetrain(
@@ -44,13 +46,19 @@ class Robot:
 	def Teleop(self):
 		self.teleop = True
 
-                self.drivetrain.run()
-                self.head.run()
-                self.waist.run()
-                self.oi.run()
+        self.drivetrain.run()
+        self.head.run()
+        self.waist.run()
 
-                #for subsystem in self.subsystems:
-		#		subsystem.run()
+        self.scheduler.addSequentialCommand(TestCommand())
+        self.scheduler.addSequentialCommand(TestCommand(2))
+        self.scheduler.addSequentialCommand(TestCommand(5))
+        self.scheduler.addSequentialCommand(TestCommand(0))
+        self.scheduler.run()
+
+        self.oi.run()
+
+
 		self.drivetrain.thread.join()
 		self.head.thread.join()
 		self.waist.thread.join()
@@ -60,7 +68,8 @@ class Robot:
 	def disable(self):
 		self.teleop = False
 
-		# Look at killing teleop thread here
+		self.scheduler.disable()
+		#self.scheduler.join()
 
 		# Disable each subsystem
 		for subsystem in self.subsystems:
