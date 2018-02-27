@@ -3,7 +3,7 @@ from tkinter import *
 
 class GUI:
     WIDTH = 800
-    HEIGHT = 410
+    HEIGHT = 450
     POP_WIDTH = 500
     POP_HEIGHT = 300
 
@@ -399,6 +399,7 @@ class GUI:
 
         self.window.mainloop()
 
-
-gui = GUI()
-gui.main()
+if __name__ == "__main__":
+    print("Test")
+    gui = GUI()
+    gui.main()
