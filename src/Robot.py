@@ -2,6 +2,9 @@
 import threading
 import time
 
+import os, sys
+sys.path.insert(0, os.getcwd())
+
 from RobotMap import RobotMap
 from OI import OI
 from Subsystems.Drivetrain import Drivetrain
@@ -9,7 +12,7 @@ from Subsystems.Head import Head
 from Subsystems.Waist import Waist
 from Commands.Scheduler import Scheduler
 from Commands.TestCommand import TestCommand
-
+from Commands.SetSpeed import SetSpeed
 
 # Robot is the main file that instantiantes all subsystems of the robot 
 # and controls the functioning of overall
@@ -50,10 +53,10 @@ class Robot:
                 self.head.run()
                 self.waist.run()
 
-                self.scheduler.addSequentialCommand(TestCommand(3000))
+                self.scheduler.addSequentialCommand(SetSpeed(1,3000, 7000))
                 self.scheduler.addSequentialCommand(TestCommand(7000))
                 self.scheduler.addSequentialCommand(TestCommand(5000))
-                self.scheduler.addSequentialCommand(TestCommand(0))
+                self.scheduler.addSequentialCommand(SetSpeed(1,1000, 6000))
                 self.scheduler.run()
 
                 self.oi.run()
