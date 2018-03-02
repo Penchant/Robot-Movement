@@ -1,6 +1,5 @@
 from tkinter import *
-
-
+from src.Commands.Scheduler import Scheduler
 class GUI:
     WIDTH = 800
     HEIGHT = 450
@@ -15,350 +14,142 @@ class GUI:
         self.head_pos = "middle"
         self.window = tkinter_ref
         self.fb = StringVar(self.window)
-        self.fb.set("Forward")
-        self.lr = StringVar(self.window)
-        self.lr.set("Right")
 
-    def set_slow(self):
-        self.speed = "slow"
+    def set_speed(self, speed):
+        self.speed = speed
 
-    def set_medium(self):
-        self.speed = "medium"
-
-    def set_fast(self):
-        self.speed = "fast"
-
-    def add_command(self):
+    def add_command(self, commandType):
         print("Command Added")
 
     def cancel(self):
         self.popup.destroy()
         print("canceling")
 
-    def set_L45(self):
-        self.angle = 45
+    def set_angle(self, angle):
+        self.angle = angle
 
-    def set_L90(self):
-        self.angle = 90
+    def set_head_pos(self, pos):
+        self.head_pos = pos
+    def initialize_popup(self, adjustment = 0):
+        self.popup = Toplevel(self.window)
+        self.popup.configure(background='White')
 
-    def set_L135(self):
-        self.angle = 135
+        # Make frames
+        parallel_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.20 * GUI.POP_WIDTH, pady=5, padx=3)
+        button_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.20 * GUI.POP_WIDTH, pady=3, padx=3)
 
-    def set_L180(self):
-        self.angle = 180
+        # Configure Layout
+        self.popup.grid_rowconfigure(1, weight=1)
+        self.popup.grid_columnconfigure(0, weight=1)
 
-    def set_R45(self):
-        self.angle = 45
+        duration_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.20 * GUI.POP_WIDTH, pady=5, padx=3)
+        duration_frame.grid(row=(1 + adjustment), column=0, sticky="w")
+        # make spinbox
+        duration_spinbox = Spinbox(duration_frame, bg='White', from_=0.1, to=10.0, width=20, format='%2.1f',
+                                   increment='0.1', font='Helvetica 36', )
+        duration_label = Label(duration_frame, bg="white", text="Enter duration in seconds:")
+        duration_label.grid(row=(0 + adjustment), sticky='w')
+        duration_spinbox.grid(row=(1 + adjustment), sticky='w')
 
-    def set_R90(self):
-        self.angle = 90
+        parallel_frame.grid(row=3, column=0, sticky="w")
+        # make checkbutton
+        parallel_check = Checkbutton(parallel_frame, bg='White')
+        parallel_label = Label(parallel_frame, bg="White", text="Make this action run in parallel?")
+        parallel_label.grid(row=0, sticky='w')
+        parallel_check.grid(row=0, column=1, sticky='e')
 
-    def set_R135(self):
-        self.angle = 135
+        button_frame.grid(row=4, column=0, sticky="w")
+        add_button = Button(button_frame, width=15, height=1, text="Add", bg="white", fg="Black",
+                        command=self.add_command)
+        cancel_button = Button(button_frame, width=15, height=1, text="Cancel", bg="white", fg="Black",
+                        command=self.cancel)
+        add_button.grid(row=0, column=3, sticky='w')
+        cancel_button.grid(row=0, column=4, sticky='e')
 
-    def set_R180(self):
-        self.angle = 180
+    def speed_frame_init(self):
+        speed_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.20 * GUI.POP_WIDTH, pady=5, padx=3)
+        speed_frame.grid(row=0, column=0, sticky="w")
+        # make buttons
+        slow_button = Button(speed_frame, width=23, text="Slow", bg="white", fg="Black",
+                             command=(self.set_speed, "slow"))
+        med_button = Button(speed_frame, width=23, text="Medium", bg="white", fg="Black",
+                            command=(self.set_speed, "medium"))
+        fast_button = Button(speed_frame, width=23, text="Fast", bg="white", fg="Black",
+                             command=(self.set_speed, "fast"))
+        # Make Labels
+        speed_label = Label(speed_frame, bg="white", text="Choose speed:")
+        # Add buttons and labels
+        speed_label.grid(row=0, column=1, sticky='w')
+        slow_button.grid(row=1, column=1, sticky="senw")
+        med_button.grid(row=1, column=2, sticky="senw")
+        fast_button.grid(row=1, column=3, sticky="senw")
 
-    def set_fl_head_pos(self):
-        self.head_pos = "Full left"
+    def option_init(self, option1, option2):
+        self.fb.set(option1)
+        option_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.20 * GUI.POP_WIDTH, pady=5, padx=3)
+        option_frame.grid(row = 2, column = 0, sticky = "w")
 
-    def set_ml_head_pos(self):
-        self.head_pos = "Middle Left"
-
-    def set_m_head_pos(self):
-        self.head_pos = "Middle"
-
-    def set_mr_head_pos(self):
-        self.head_pos = "Middle Right"
-
-    def set_fr_head_pos(self):
-        self.head_pos = "Full Right"
+        # Make option menu
+        fb_option = OptionMenu(option_frame, self.fb, option1, option2)
+        option_label = Label(option_frame, bg="white", text = "Choose direction:")
+        option_label.grid(row = 0, column = 0, sticky = 'w')
+        fb_option.grid(row = 0 , column =1, sticky = 'w')
 
     def f_button_clicked(self):
-        self.popup = Toplevel(self.window)
-        self.popup.configure(background='White')
-
-        # Make frames
-        speed_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.20 * GUI.POP_WIDTH, pady=5, padx=3)
-        duration_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.20 * GUI.POP_WIDTH, pady=5, padx=3)
-        option_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.20 * GUI.POP_WIDTH, pady=5, padx=3)
-        parallel_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.20 * GUI.POP_WIDTH, pady=5, padx=3)
-        button_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.20 * GUI.POP_WIDTH, pady=3, padx=3)
-
-        # Configure Layout
-        self.popup.grid_rowconfigure(1, weight=1)
-        self.popup.grid_columnconfigure(0, weight=1)
-
-        speed_frame.grid(row=0, column=0, sticky="w")
-        duration_frame.grid(row=1, column=0, sticky="w")
-        option_frame.grid(row = 2, column = 0, sticky = "w")
-        parallel_frame.grid(row=3, column=0, sticky="w")
-        button_frame.grid(row=4, column=0, sticky="w")
-
-        # make buttons
-        slow_button = Button(speed_frame, width=23, text="Slow", bg="white", fg="Black",
-                             command=self.set_slow)
-        med_button = Button(speed_frame, width=23, text="Medium", bg="white", fg="Black",
-                            command=self.set_medium)
-        fast_button = Button(speed_frame, width=23, text="Fast", bg="white", fg="Black",
-                             command=self.set_fast)
-        add_button = Button(button_frame, width=15, height=1, text="Add", bg="white", fg="Black",
-                            command=self.add_command)
-        cancel_button = Button(button_frame, width=15, height=1, text="Cancel", bg="white", fg="Black",
-                               command=self.cancel)
-        # make spinbox
-        duration_spinbox = Spinbox(duration_frame, bg='White', from_=0.1, to=10.0, width=20, format='%2.1f',
-                                   increment='0.1', font='Helvetica 36', )
-        # Make option meny
-        fb_option = OptionMenu(option_frame, self.fb, "Forward", "Backward")
-
-        # make checkbutton
-        parallel_check = Checkbutton(parallel_frame, bg='White')
-
-        # Make Labels
-        speed_label = Label(speed_frame, bg="white", text="Choose speed:")
-        duration_label = Label(duration_frame, bg="white", text="Enter duration in seconds:")
-        option_label = Label(option_frame, bg="white", text = "Choose direction:")
-        parallel_label = Label(parallel_frame, bg="White", text="Make this action run in parallel?")
-
-        # Add buttons and labels
-        speed_label.grid(row=0, column=1, sticky='w')
-        slow_button.grid(row=1, column=1, sticky="senw")
-        med_button.grid(row=1, column=2, sticky="senw")
-        fast_button.grid(row=1, column=3, sticky="senw")
-
-        duration_label.grid(row=0, sticky='w')
-        duration_spinbox.grid(row=1, sticky='w')
-
-        option_label.grid(row = 0, column = 0, sticky = 'w')
-        fb_option.grid(row = 0 , column =1, sticky = 'w')
-
-        parallel_label.grid(row=0, sticky='w')
-        parallel_check.grid(row=0, column=1, sticky='e')
-
-        add_button.grid(row=0, column=3, sticky='w')
-        cancel_button.grid(row=0, column=4, sticky='e')
+        self.initialize_popup()
+        self.speed_frame_init()
+        self.option_init("Forward", "Backward")
 
     def l_button_clicked(self):
-        self.popup = Toplevel(self.window)
-        self.popup.configure(background='White')
-
-        # Make frames
-        speed_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.20 * GUI.POP_WIDTH, pady=5, padx=3)
-        duration_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.20 * GUI.POP_WIDTH, pady=5, padx=3)
-        option_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.20 * GUI.POP_WIDTH, pady=5, padx=3)
-        parallel_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.20 * GUI.POP_WIDTH, pady=5, padx=3)
-        button_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.20 * GUI.POP_WIDTH, pady=3, padx=3)
-
-        # Configure Layout
-        self.popup.grid_rowconfigure(1, weight=1)
-        self.popup.grid_columnconfigure(0, weight=1)
-
-        speed_frame.grid(row=0, column=0, sticky="w")
-        duration_frame.grid(row=1, column=0, sticky="w")
-        option_frame.grid(row = 2, column = 0, sticky = "w")
-        parallel_frame.grid(row=3, column=0, sticky="w")
-        button_frame.grid(row=4, column=0, sticky="w")
-
-        # make buttons
-        slow_button = Button(speed_frame, width=23, text="Slow", bg="white", fg="Black",
-                             command=self.set_slow)
-        med_button = Button(speed_frame, width=23, text="Medium", bg="white", fg="Black",
-                            command=self.set_medium)
-        fast_button = Button(speed_frame, width=23, text="Fast", bg="white", fg="Black",
-                             command=self.set_fast)
-        add_button = Button(button_frame, width=15, height=1, text="Add", bg="white", fg="Black",
-                            command=self.add_command)
-        cancel_button = Button(button_frame, width=15, height=1, text="Cancel", bg="white", fg="Black",
-                               command=self.cancel)
-        # make spinbox
-        duration_spinbox = Spinbox(duration_frame, bg='White', from_=0.1, to=10.0, width=20, format='%2.1f',
-                                   increment='0.1', font='Helvetica 36', )
-        # Make option meny
-        fb_option = OptionMenu(option_frame, self.lr, "Right", "Left")
-
-        # make checkbutton
-        parallel_check = Checkbutton(parallel_frame, bg='White')
-
-        # Make Labels
-        speed_label = Label(speed_frame, bg="white", text="Choose speed:")
-        duration_label = Label(duration_frame, bg="white", text="Enter duration in seconds:")
-        option_label = Label(option_frame, bg="white", text = "Choose direction:")
-        parallel_label = Label(parallel_frame, bg="White", text="Make this action run in parallel?")
-
-        # Add buttons and labels
-        speed_label.grid(row=0, column=1, sticky='w')
-        slow_button.grid(row=1, column=1, sticky="senw")
-        med_button.grid(row=1, column=2, sticky="senw")
-        fast_button.grid(row=1, column=3, sticky="senw")
-
-        duration_label.grid(row=0, sticky='w')
-        duration_spinbox.grid(row=1, sticky='w')
-
-        option_label.grid(row = 0, column = 0, sticky = 'w')
-        fb_option.grid(row = 0 , column =1, sticky = 'w')
-
-        parallel_label.grid(row=0, sticky='w')
-        parallel_check.grid(row=0, column=1, sticky='e')
-
-        add_button.grid(row=0, column=3, sticky='w')
-        cancel_button.grid(row=0, column=4, sticky='e')
-
-    def r_button_clicked(self):
-        self.popup = Toplevel(self.window)
-        self.popup.configure(background='White')
-
-        # Make frames
-        angle_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.25 * GUI.POP_WIDTH, pady=5, padx=3)
-        parallel_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.25 * GUI.POP_WIDTH, pady=5, padx=3)
-        button_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.25 * GUI.POP_WIDTH, pady=3, padx=3)
-
-        # Configure Layout
-        self.popup.grid_rowconfigure(1, weight=1)
-        self.popup.grid_columnconfigure(0, weight=1)
-
-        angle_frame.grid(row=0, column=0, sticky="w")
-        parallel_frame.grid(row=1, column=0, sticky="w")
-        button_frame.grid(row=2, column=0, sticky="w")
-
-        # make buttons
-        _45_button = Button(angle_frame, width=14, text="45 degrees", bg="white", fg="Black",
-                            command=self.set_R45)
-        _90_button = Button(angle_frame, width=14, text="90 degrees", bg="white", fg="Black",
-                            command=self.set_R90)
-        _135_button = Button(angle_frame, width=14, text="135 degrees", bg="white", fg="Black",
-                             command=self.set_R135)
-        _180_button = Button(angle_frame, width=14, text="180 degrees", bg="white", fg="Black",
-                             command=self.set_R180)
-        add_button = Button(button_frame, width=15, height=1, text="Add", bg="white", fg="Black",
-                            command=self.add_command)
-        cancel_button = Button(button_frame, width=15, height=1, text="Cancel", bg="white", fg="Black",
-                               command=self.cancel)
-        # make checkbutton
-        parallel_check = Checkbutton(parallel_frame, bg='White')
-
-        # Make Labels
-        angle_label = Label(angle_frame, bg="white", text="Choose angle:")
-        parallel_label = Label(parallel_frame, bg="White", text="Make this action run in parallel?")
-
-        # Add buttons and labels
-        angle_label.grid(row=0, column=1, sticky='w')
-        _45_button.grid(row=1, column=1, sticky="senw")
-        _90_button.grid(row=1, column=2, sticky="senw")
-        _135_button.grid(row=1, column=3, sticky="senw")
-        _180_button.grid(row=1, column=4, sticky="senw")
-
-        parallel_label.grid(row=0, sticky='w')
-        parallel_check.grid(row=0, column=1, sticky='e')
-
-        add_button.grid(row=0, column=3, sticky='w')
-        cancel_button.grid(row=0, column=4, sticky='e')
+        self.initialize_popup()
+        self.speed_frame_init()
+        self.option_init("Right", "Left")
 
     def h_button_clicked(self):
-        self.popup = Toplevel(self.window)
-        self.popup.configure(background='White')
+        self.initialize_popup(1)
 
         # Make frames
         direction_ud_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.25 * GUI.POP_WIDTH, pady=5,
                                    padx=3)
         direction_lr_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.25 * GUI.POP_WIDTH, pady=5,
-                                   padx=3)
-        duration_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.25 * GUI.POP_WIDTH, pady=5, padx=3)
-        parallel_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.25 * GUI.POP_WIDTH, pady=5, padx=3)
-        button_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.25 * GUI.POP_WIDTH, pady=3, padx=3)
-
-        # Configure Layout
-        self.popup.grid_rowconfigure(1, weight=1)
-        self.popup.grid_columnconfigure(0, weight=1)
-
+                                    padx=3)
         direction_ud_frame.grid(row=0, column=0, sticky="w")
         direction_lr_frame.grid(row=1, column=0, sticky="w")
-        # duration_frame.grid(row=2, column=0, sticky="w")
-        parallel_frame.grid(row=3, column=0, sticky="w")
-        button_frame.grid(row=4, column=0, sticky="w")
 
         # make buttons
         ud_scale = Scale(direction_ud_frame, bg='White', bd=4, from_=-10, to=10, resolution=1, orient=HORIZONTAL,
-                         sliderlength=30, length=400, width=30)
+                        sliderlength=30, length=400, width=30)
         lr_scale = Scale(direction_lr_frame, bg='White', bd=4, from_=-10, to=10, resolution=1, orient=HORIZONTAL,
-                         sliderlength=30, length=400, width=30)
-        add_button = Button(button_frame, width=15, height=1, text="Add", bg="white", fg="Black",
-                            command=self.add_command)
-        cancel_button = Button(button_frame, width=15, height=1, text="Cancel", bg="white", fg="Black",
-                               command=self.cancel)
-        # make spinbox
-        # duration_spinbox = Spinbox(duration_frame, bg='White', from_=0.1, to=10.0, width=20, format='%2.1f',
-        #                       increment='0.1', font='Helvetica 36', )
-
-        # make checkbutton
-        parallel_check = Checkbutton(parallel_frame, bg='White')
-
+                          sliderlength=30, length=400, width=30)
         # Make Labels
         ud_label = Label(direction_ud_frame, bg="white", text="Adjust slider to look up or down:")
         lr_label = Label(direction_lr_frame, bg='White', text="Adjust slider to look left or right:")
-        # duration_label = Label(duration_frame, bg="white", text="Enter duration in seconds:")
-        parallel_label = Label(parallel_frame, bg="White", text="Make this action run in parallel?")
 
-        # Add buttons and labels
+        #Add buttons and labels
         ud_label.grid(row=1, column=1, sticky='w')
         ud_scale.grid(row=1, column=2, sticky='e')
         lr_label.grid(row=1, column=1, sticky="w")
         lr_scale.grid(row=1, column=2, sticky="e")
 
-        # duration_label.grid(row=0, sticky='w')
-        # duration_spinbox.grid(row=1, sticky='w')
-
-        parallel_label.grid(row=0, sticky='w')
-        parallel_check.grid(row=0, column=1, sticky='e')
-
-        add_button.grid(row=0, column=3, sticky='w')
-        cancel_button.grid(row=0, column=4, sticky='e')
-
     def w_button_clicked(self):
-        self.popup = Toplevel(self.window)
-        self.popup.configure(background='White')
-
+        self.initialize_popup()
         # Make frames
         direction_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.25 * GUI.POP_WIDTH, pady=5, padx=3)
-        duration_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.25 * GUI.POP_WIDTH, pady=5, padx=3)
-        parallel_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.25 * GUI.POP_WIDTH, pady=5, padx=3)
-        button_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.25 * GUI.POP_WIDTH, pady=3, padx=3)
-
-        # Configure Layout
-        self.popup.grid_rowconfigure(1, weight=1)
-        self.popup.grid_columnconfigure(0, weight=1)
-
         direction_frame.grid(row=0, column=0, sticky="w")
-        duration_frame.grid(row=1, column=0, sticky="w")
-        parallel_frame.grid(row=2, column=0, sticky="w")
-        button_frame.grid(row=3, column=0, sticky="w")
 
         # make buttons
         fl_button = Button(direction_frame, width=15, text="Full Left", bg="white", fg="Black",
-                           command=self.set_fl_head_pos)
+                           command=(self.set_head_pos, "Full left"))
         ml_button = Button(direction_frame, width=15, text="Middle Left", bg="white", fg="Black",
-                           command=self.set_ml_head_pos)
+                           command=(self.set_head_pos, "Middle left"))
         m_button = Button(direction_frame, width=15, text="Middle", bg="white", fg="Black",
-                          command=self.set_m_head_pos)
+                          command=(self.set_head_pos, "Middle"))
         mr_button = Button(direction_frame, width=15, text="Middle Right", bg="white", fg="Black",
-                           command=self.set_mr_head_pos)
+                           command=(self.set_head_pos, "Middle right"))
         fr_button = Button(direction_frame, width=15, text="Full Right", bg="white", fg="Black",
-                           command=self.set_fr_head_pos)
-        add_button = Button(button_frame, width=15, height=1, text="Add", bg="white", fg="Black",
-                            command=self.add_command)
-        cancel_button = Button(button_frame, width=15, height=1, text="Cancel", bg="white", fg="Black",
-                               command=self.cancel)
-        # make spinbox
-        duration_spinbox = Spinbox(duration_frame, bg='White', from_=0.1, to=10.0, width=20, format='%2.1f',
-                                   increment='0.1', font='Helvetica 36', )
-
-        # make checkbutton
-        parallel_check = Checkbutton(parallel_frame, bg='White')
-
+                           command=(self.set_head_pos, "Full right"))
         # Make Labels
         direction_label = Label(direction_frame, bg="white", text="Choose speed:")
-        duration_label = Label(duration_frame, bg="white", text="Enter duration in seconds:")
-        parallel_label = Label(parallel_frame, bg="White", text="Make this action run in parallel?")
 
         # Add buttons and labels
         direction_label.grid(row=0, column=1, sticky='w')
@@ -367,15 +158,6 @@ class GUI:
         m_button.grid(row=1, column=3, sticky="senw")
         mr_button.grid(row=1, column=4, sticky="senw")
         fr_button.grid(row=1, column=5, sticky="senw")
-
-        duration_label.grid(row=0, sticky='w')
-        duration_spinbox.grid(row=1, sticky='w')
-
-        parallel_label.grid(row=0, sticky='w')
-        parallel_check.grid(row=0, column=1, sticky='e')
-
-        add_button.grid(row=0, column=3, sticky='w')
-        cancel_button.grid(row=0, column=4, sticky='e')
 
     def go_button_clicked(self):
         print("The milk done poured")
@@ -427,7 +209,6 @@ class GUI:
         l7 = Label(queue_frame, bg="white", text="Move Forward, duration = 1", font = 'Helvetica 12')
         l8 = Label(queue_frame, bg="white", text="Move Forward, duration = 1", font = 'Helvetica 12')
 
-
         # Add buttons to frames
         fb_button.grid(row=0, column=0, sticky="nsew")
         lr_button.grid(row=0, column=1, sticky="nsew")
@@ -444,7 +225,6 @@ class GUI:
         l6.grid(row = 6, column =0, sticky = 'w')
         l7.grid(row = 7, column =0, sticky = 'w')
         l8.grid(row = 8, column =0, sticky = 'w')
-
 
         go_button.grid(sticky="snew")
 

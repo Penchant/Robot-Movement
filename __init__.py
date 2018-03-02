@@ -1,0 +1,24 @@
+Robot-Movement/
+	src/
+		__init__.py
+		RobotMap.py
+		Robot.py
+		OI.py
+		Subsystems/
+			__init__.py
+			Drivetrain.py
+			Head.py
+			Waist.py
+			RoboGUI.py
+		Commands/
+			__init__.py
+			TestCommand.py
+			Command.py
+			Scheduler.py
+			SetPosition.py
+			SetSpeed.py
+			TimedCommand.py
+	lib/
+		__init__.py
+		Maestro.py
+	setup.py
