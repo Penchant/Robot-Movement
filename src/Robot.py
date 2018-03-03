@@ -13,6 +13,7 @@ from Subsystems.Waist import Waist
 from Commands.Scheduler import Scheduler
 from Commands.TestCommand import TestCommand
 from Commands.SetSpeed import SetSpeed
+from Commands.SetPosition import SetPosition
 
 # Robot is the main file that instantiantes all subsystems of the robot 
 # and controls the functioning of overall
@@ -49,21 +50,23 @@ class Robot:
 	def Teleop(self):
 		self.teleop = True
 
-                self.drivetrain.run()
-                self.head.run()
-                self.waist.run()
+                #self.drivetrain.run()
+                #self.head.run()
+               # self.waist.run()
 
-                self.scheduler.addSequentialCommand(SetSpeed(1,3000, 7000))
+                self.scheduler.addSequentialCommand(SetSpeed(1,3000, 8000))
+                self.scheduler.addSequentialCommand(SetSpeed(2, 1000, 8000))
                 self.scheduler.addSequentialCommand(TestCommand(7000))
                 self.scheduler.addSequentialCommand(TestCommand(5000))
                 self.scheduler.addSequentialCommand(SetSpeed(1,1000, 6000))
+                self.scheduler.addSequentialCommand(SetSpeed(2, 1000, 6000))
                 self.scheduler.run()
 
                 self.oi.run()
                 
-		self.drivetrain.thread.join()
-		self.head.thread.join()
-		self.waist.thread.join()
+		#self.drivetrain.thread.join()
+		#self.head.thread.join()
+		#self.waist.thread.join()
 		
 		self.teleop = False
 

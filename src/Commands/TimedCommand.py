@@ -10,6 +10,7 @@ class TimedCommand(Command):
                 print("Initializing Timed command")
                 self.startTime = int(round(time.time() * 1000))
                 print(self.startTime)
+                return 
         def _isFinished(self):
                 if self.startTime == -1:
                         self.startTime = int(round(time.time()*1000))

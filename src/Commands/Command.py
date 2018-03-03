@@ -1,4 +1,6 @@
+import os, sys
 
+sys.path.insert(0, os.getcwd())
 
 class Command(object):
 	def __init__(self, time=0):

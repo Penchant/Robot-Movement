@@ -1,12 +1,12 @@
 from tkinter import *
-from src.Commands.Scheduler import Scheduler
+#from Scheduler import Scheduler
 class GUI:
     WIDTH = 800
     HEIGHT = 450
     POP_WIDTH = 500
     POP_HEIGHT = 300
 
-    def __init__(self, tkinter_ref = None):
+    def __init__(self, tkinter_ref = None, scheduler = None):
         if tkinter_ref == None:
             tkinter_ref = Tk()
         self.speed = "slow"
@@ -14,6 +14,7 @@ class GUI:
         self.head_pos = "middle"
         self.window = tkinter_ref
         self.fb = StringVar(self.window)
+        self.scheduler = scheduler
 
     def set_speed(self, speed):
         self.speed = speed
