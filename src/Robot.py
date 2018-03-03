@@ -21,16 +21,7 @@ from Commands.SetPosition import SetPosition
 class Robot:
 	def __init__(self):
 		RobotMap.init()
-
-                for channel in (1,2,3,4):
-                        print("Initializing " + str(channel))
-                        RobotMap.controller.setTarget(channel, 5000)
-                        time.sleep(.1)
-                        RobotMap.controller.setTarget(channel, 7000)
-                        time.sleep(.1)
-                        RobotMap.controller.setTarget(channel, 6000)
-                        time.sleep(.1)
-                self.scheduler = Scheduler()
+		self.scheduler = Scheduler()
 		self.subsystems = []
 
 		self.drivetrain = Drivetrain(
@@ -54,15 +45,14 @@ class Robot:
                 #self.head.run()
                # self.waist.run()
 
-                self.scheduler.addSequentialCommand(SetSpeed(1,3000, 8000))
-                self.scheduler.addSequentialCommand(SetSpeed(2, 1000, 8000))
-                self.scheduler.addSequentialCommand(TestCommand(7000))
-                self.scheduler.addSequentialCommand(TestCommand(5000))
-                self.scheduler.addSequentialCommand(SetSpeed(1,1000, 6000))
-                self.scheduler.addSequentialCommand(SetSpeed(2, 1000, 6000))
-                self.scheduler.run()
-
-                self.oi.run()
+		self.scheduler.addSequentialCommand(SetSpeed(1,3000, 8000))
+		self.scheduler.addSequentialCommand(SetSpeed(2, 1000, 8000))
+		self.scheduler.addSequentialCommand(TestCommand(7000))
+		self.scheduler.addSequentialCommand(TestCommand(5000))
+		self.scheduler.addSequentialCommand(SetSpeed(1,1000, 6000))
+		self.scheduler.addSequentialCommand(SetSpeed(2, 1000, 6000))
+		self.scheduler.run()
+		self.oi.run()
                 
 		#self.drivetrain.thread.join()
 		#self.head.thread.join()
@@ -81,14 +71,14 @@ class Robot:
 			if(subsystem.enable is True):
 				subsystem.disable()
 		self.oi.disable()
-                print("All systems disabled")
+		print("All systems disabled")
 
 def main():
 	robot = Robot()
 
 	# Create thread eventually that can then be killed 
 	robot.Teleop()
-        print("Program is done")
+	print("Program is done")
         
 if __name__ == "__main__" :
 	main()

@@ -13,6 +13,7 @@ import time
 
 from Subsystems.Drivetrain import Drivetrain
 from RobotMap import RobotMap
+from Subsystems.RoboGUI import GUI
 
 class OI:
 	def __init__(self, Robot):
@@ -20,16 +21,16 @@ class OI:
 		os.system('xset r off')
 		self.tk = Tk()
 
-                frame = Frame(self.tk)
+        frame = Frame(self.tk)
 		frame.bind("<KeyPress>", self.keydown)
 		frame.bind("<KeyRelease>", self.keyup)
-                frame.focus_set()
-                frame.pack()
-
-                self.speed = Drivetrain.Slow
+        frame.focus_set()
+        frame.pack()
+		self.speed = Drivetrain.Slow
+		self.gui = GUI(self.tk)
                 
 	def run(self):
-		self.tk.mainloop()
+		self.gui.main()
 	def disable(self):
                 print("Destroying tk")
                 self.tk.destroy()
