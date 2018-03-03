@@ -92,6 +92,9 @@ class Controller:
         #    
         lsb = target & 0x7f #7 bits for least significant byte
         msb = (target >> 7) & 0x7f #shift 7 and take next 7 bits for msb
+        cchan = chr(chan)
+        clsb = chr(lsb)
+        cmsb = chr(msb)
         cmd = chr(0x04) + chr(chan) + chr(lsb) + chr(msb)
         self.sendCmd(cmd)
         # Record Target value

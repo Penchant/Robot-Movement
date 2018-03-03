@@ -20,13 +20,13 @@ class OI:
 		self.robot = Robot
 		os.system('xset r off')
 		self.tk = Tk()
-
-        frame = Frame(self.tk)
+                frame = Frame(self.tk)
 		frame.bind("<KeyPress>", self.keydown)
 		frame.bind("<KeyRelease>", self.keyup)
-        frame.focus_set()
-        frame.pack()
-		self.speed = Drivetrain.Slow
+                frame.focus_set()
+                #frame.pack()
+
+                self.speed = Drivetrain.Slow
 		self.gui = GUI(self.tk)
                 
 	def run(self):
