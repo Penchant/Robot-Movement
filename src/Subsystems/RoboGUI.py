@@ -1,5 +1,8 @@
 from tkinter import *
+from collections import namedtuple
 #from Scheduler import Scheduler
+from Drivetrain import Drivetrain
+from Waist import Waist
 class GUI:
     WIDTH = 800
     HEIGHT = 450
@@ -17,17 +20,22 @@ class GUI:
         self.scheduler = scheduler
 
     def set_speed(self, speed):
-        self.speed = speed
+        self.target = speed
 
     def add_command(self, commandType):
-        print("Command Added")
+        self.duration = self.duration_spinbox.get()
+        self.parallel = self.parallel_check.get()
+        self.popup.destroy()
+        SetPoint = namedtuple('SetPoint', ['channel', 'timeout', 'target', 'parallel'])
+        temp = SetPoint(channel = self.channel, timeout = self.duration, target = self.target, parallel = self.parallel)
+        print("Command Added" + str(temp))
 
     def cancel(self):
         self.popup.destroy()
         print("canceling")
 
     def set_angle(self, angle):
-        self.angle = angle
+        self.target = angle
 
     def set_head_pos(self, pos):
         self.head_pos = pos
@@ -46,18 +54,18 @@ class GUI:
         duration_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.20 * GUI.POP_WIDTH, pady=5, padx=3)
         duration_frame.grid(row=(1 + adjustment), column=0, sticky="w")
         # make spinbox
-        duration_spinbox = Spinbox(duration_frame, bg='White', from_=0.1, to=10.0, width=20, format='%2.1f',
+        self.duration_spinbox = Spinbox(duration_frame, bg='White', from_=0.1, to=10.0, width=20, format='%2.1f',
                                    increment='0.1', font='Helvetica 36', )
         duration_label = Label(duration_frame, bg="white", text="Enter duration in seconds:")
         duration_label.grid(row=(0 + adjustment), sticky='w')
-        duration_spinbox.grid(row=(1 + adjustment), sticky='w')
+        self.duration_spinbox.grid(row=(1 + adjustment), sticky='w')
 
         parallel_frame.grid(row=3, column=0, sticky="w")
         # make checkbutton
-        parallel_check = Checkbutton(parallel_frame, bg='White')
+        self.parallel_check = Checkbutton(parallel_frame, bg='White')
         parallel_label = Label(parallel_frame, bg="White", text="Make this action run in parallel?")
         parallel_label.grid(row=0, sticky='w')
-        parallel_check.grid(row=0, column=1, sticky='e')
+        self.parallel_check.grid(row=0, column=1, sticky='e')
 
         button_frame.grid(row=4, column=0, sticky="w")
         add_button = Button(button_frame, width=15, height=1, text="Add", bg="white", fg="Black",
@@ -72,11 +80,11 @@ class GUI:
         speed_frame.grid(row=0, column=0, sticky="w")
         # make buttons
         slow_button = Button(speed_frame, width=23, text="Slow", bg="white", fg="Black",
-                             command=(self.set_speed, "slow"))
+                             command=(self.set_speed, Drivetrain.Slow))
         med_button = Button(speed_frame, width=23, text="Medium", bg="white", fg="Black",
-                            command=(self.set_speed, "medium"))
+                            command=(self.set_speed, Drivetrain.Medium))
         fast_button = Button(speed_frame, width=23, text="Fast", bg="white", fg="Black",
-                             command=(self.set_speed, "fast"))
+                             command=(self.set_speed, Drivetrain.Fast))
         # Make Labels
         speed_label = Label(speed_frame, bg="white", text="Choose speed:")
         # Add buttons and labels
@@ -140,15 +148,15 @@ class GUI:
 
         # make buttons
         fl_button = Button(direction_frame, width=15, text="Full Left", bg="white", fg="Black",
-                           command=(self.set_head_pos, "Full left"))
+                           command=(self.set_head_pos, Waist.FarLeft))
         ml_button = Button(direction_frame, width=15, text="Middle Left", bg="white", fg="Black",
-                           command=(self.set_head_pos, "Middle left"))
+                           command=(self.set_head_pos, Waist.MidLeft))
         m_button = Button(direction_frame, width=15, text="Middle", bg="white", fg="Black",
-                          command=(self.set_head_pos, "Middle"))
+                          command=(self.set_head_pos, Waist.Middle))
         mr_button = Button(direction_frame, width=15, text="Middle Right", bg="white", fg="Black",
-                           command=(self.set_head_pos, "Middle right"))
+                           command=(self.set_head_pos, Waist.MidRight))
         fr_button = Button(direction_frame, width=15, text="Full Right", bg="white", fg="Black",
-                           command=(self.set_head_pos, "Full right"))
+                           command=(self.set_head_pos, Waist.FarRight))
         # Make Labels
         direction_label = Label(direction_frame, bg="white", text="Choose speed:")
 

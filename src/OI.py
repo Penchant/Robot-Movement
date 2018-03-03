@@ -27,7 +27,7 @@ class OI:
                 #frame.pack()
 
                 self.speed = Drivetrain.Slow
-		self.gui = GUI(self.tk)
+		self.gui = GUI(self.tk, self.robot.scheduler)
                 
 	def run(self):
 		self.gui.main()
