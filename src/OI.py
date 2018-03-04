@@ -20,10 +20,10 @@ class OI:
 		self.robot = Robot
 		os.system('xset r off')
 		self.tk = Tk()
-                frame = Frame(self.tk)
+		frame = Frame(self.tk)
 		frame.bind("<KeyPress>", self.keydown)
 		frame.bind("<KeyRelease>", self.keyup)
-                frame.focus_set()
+		frame.focus_set()
                 #frame.pack()
 
                 self.speed = Drivetrain.Slow
@@ -32,8 +32,8 @@ class OI:
 	def run(self):
 		self.gui.main()
 	def disable(self):
-                print("Destroying tk")
-                self.tk.destroy()
+		print("Destroying tk")
+		self.tk.destroy()
 		os.system('xset r on')
 	def keydown(self,event):
 		print("Key pressed")	

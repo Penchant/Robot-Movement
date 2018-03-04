@@ -18,17 +18,19 @@ class GUI:
         self.window = tkinter_ref
         self.fb = StringVar(self.window)
         self.scheduler = scheduler
+        self.queuedCommands = []
 
     def set_speed(self, speed):
         self.target = speed
 
-    def add_command(self, commandType):
+    def add_command(self):
         self.duration = self.duration_spinbox.get()
-        self.parallel = self.parallel_check.get()
-        self.popup.destroy()
+
         SetPoint = namedtuple('SetPoint', ['channel', 'timeout', 'target', 'parallel'])
-        temp = SetPoint(channel = self.channel, timeout = self.duration, target = self.target, parallel = self.parallel)
-        print("Command Added" + str(temp))
+        temp = SetPoint(channel = self.channel, timeout = self.duration, target = self.target, parallel = self.parallel.get())
+        self.queuedCommands.append(temp)
+        print("Command Added" + str(temp) + str(self.parallel.get()))
+        self.popup.destroy()
 
     def cancel(self):
         self.popup.destroy()
@@ -62,10 +64,11 @@ class GUI:
 
         parallel_frame.grid(row=3, column=0, sticky="w")
         # make checkbutton
-        self.parallel_check = Checkbutton(parallel_frame, bg='White')
+        self.parallel = BooleanVar()
+        parallel_check = Checkbutton(parallel_frame, bg='White', variable = self.parallel)
         parallel_label = Label(parallel_frame, bg="White", text="Make this action run in parallel?")
         parallel_label.grid(row=0, sticky='w')
-        self.parallel_check.grid(row=0, column=1, sticky='e')
+        parallel_check.grid(row=0, column=1, sticky='e')
 
         button_frame.grid(row=4, column=0, sticky="w")
         add_button = Button(button_frame, width=15, height=1, text="Add", bg="white", fg="Black",
