@@ -1,13 +1,18 @@
 from Queue import *
 from TimedCommand import TimedCommand
 import threading
+from collections import deque
+from SetSpeed import SetSpeed
+from SetPosition import SetPosition
+
 
 class Scheduler:
 	def __init__(self):
 		self.current_command = None
 		self.schedule = Queue()
 		self.enable = False
-		pass
+                self.guiQueue = []
+                pass
 	def addSequentialCommand(self, command):
 		if not isinstance(command, TimedCommand):
 			self.schedule.put(command)
@@ -30,9 +35,27 @@ class Scheduler:
                 complete = self.current_command._isFinished()
 		if ((self.current_command != None) and (complete == False)):
 			self.current_command.enable = False
+        def createCommands(self):
+                queue =deque(self.guiQueue)
+                print("Creating commands")
+                while(len(queue) != 0 ):
+                        guiCommand = queue.popleft()
+                        print("Creating command " + str(guiCommand.index))
+                              
+                        if( (guiCommand.channel == 1) or (guiCommand.channel == 2)):
+                                command = SetSpeed(guiCommand.channel, guiCommand.timeout, guiCommand.target, guiCommand.parallel)
+                                self.addSequentialCommand(command)
+                        else:
+                                command = SetPosition(guiCommand.channel, guiCommand.target, guiCommand.timeout, guiCommand.parallel)
+                                if guiCommand.parallel:
+                                        self.addParallelCommand(command)
+                                else:
+                                        self.addSequentialCommand(command)
+                
 	def run(self):
 		self.enable = True
-		self.thread = threading.Thread(None, self.loop)
+                self.createCommands()
+                self.thread = threading.Thread(None, self.loop)
 		self.thread.start()
         def disable(self):
                 self.enable = False

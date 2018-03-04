@@ -45,13 +45,13 @@ class Robot:
                 #self.head.run()
                # self.waist.run()
 
-		self.scheduler.addSequentialCommand(SetSpeed(1,3000, 8000))
-		self.scheduler.addSequentialCommand(SetSpeed(2, 1000, 8000))
-		self.scheduler.addSequentialCommand(TestCommand(7000))
-		self.scheduler.addSequentialCommand(TestCommand(5000))
-		self.scheduler.addSequentialCommand(SetSpeed(1,1000, 6000))
-		self.scheduler.addSequentialCommand(SetSpeed(2, 1000, 6000))
-		self.scheduler.run()
+		#self.scheduler.addSequentialCommand(SetSpeed(1,3000, 8000))
+		#self.scheduler.addSequentialCommand(SetSpeed(2, 1000, 8000))
+		#self.scheduler.addSequentialCommand(TestCommand(7000))
+		#self.scheduler.addSequentialCommand(TestCommand(5000))
+		#self.scheduler.addSequentialCommand(SetSpeed(1,1000, 6000))
+		#self.scheduler.addSequentialCommand(SetSpeed(2, 1000, 6000))
+		#self.scheduler.run()
 		self.oi.run()
                 
 		#self.drivetrain.thread.join()
@@ -78,7 +78,8 @@ def main():
 
 	# Create thread eventually that can then be killed 
 	robot.Teleop()
-	print("Program is done")
+        #robot.oi.disable()
+        print("Program is done")
         
 if __name__ == "__main__" :
 	main()

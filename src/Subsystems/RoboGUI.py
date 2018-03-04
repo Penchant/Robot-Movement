@@ -19,25 +19,27 @@ class GUI:
         self.fb = StringVar(self.window)
         self.scheduler = scheduler
         self.queuedCommands = []
+        self.target = 0
 
     def set_speed(self, speed):
+        print("Speed being set")
         self.target = speed
 
     def add_command(self):
         self.duration = self.duration_spinbox.get()
 
-        if channel == 1:
+        if self.channel == 1:
             self.target = self.target + 6000 if self.fb == 'Forward' else 6000 - self.target
-        elif channel == 2:
+        elif self.channel == 2:
             self.target = self.target + 6000 if self.fb == 'Left' else 6000 - self.target
-        elif channel = 3:
+        elif self.channel == 3:
             self.channel = 4 if self.fb == 'Horizontal' else 3
             self.target = self.head_scale.get() * 3000 / self.head_scale['to'] + 6000
 
         SetPoint = namedtuple('SetPoint', ['channel', 'timeout', 'target', 'parallel', 'index'])
-        temp = SetPoint(channel = self.channel, timeout = self.duration, target = self.target, parallel = self.parallel.get(), index = len(self.queuedCommands))
+        temp = SetPoint(channel = self.channel, timeout = int(float(self.duration)*1000), target = self.target, parallel = self.parallel.get(), index = len(self.queuedCommands))
         self.queuedCommands.append(temp)
-        print("Command Added" + str(temp) + str(self.parallel.get()))
+        print("Command Added" + str(temp))
         self.popup.destroy()
 
     def cancel(self):
@@ -91,11 +93,11 @@ class GUI:
         speed_frame.grid(row=0, column=0, sticky="w")
         # make buttons
         slow_button = Button(speed_frame, width=23, text="Slow", bg="white", fg="Black",
-                             command=(self.set_speed, Drivetrain.Slow))
+                             command=(lambda: self.set_speed(Drivetrain.Slow)))
         med_button = Button(speed_frame, width=23, text="Medium", bg="white", fg="Black",
-                            command=(self.set_speed, Drivetrain.Medium))
+                            command=(lambda: self.set_speed(Drivetrain.Medium)))
         fast_button = Button(speed_frame, width=23, text="Fast", bg="white", fg="Black",
-                             command=(self.set_speed, Drivetrain.Fast))
+                             command=(lambda: self.set_speed(Drivetrain.Fast)))
         # Make Labels
         speed_label = Label(speed_frame, bg="white", text="Choose speed:")
         # Add buttons and labels
@@ -163,15 +165,15 @@ class GUI:
 
         # make buttons
         fl_button = Button(direction_frame, width=15, text="Full Left", bg="white", fg="Black",
-                           command=(self.set_head_pos, Waist.FarLeft))
+                           command=(lambda: self.set_head_pos(Waist.FarLeft)))
         ml_button = Button(direction_frame, width=15, text="Middle Left", bg="white", fg="Black",
-                           command=(self.set_head_pos, Waist.MidLeft))
+                           command=(lambda: self.set_head_pos(Waist.MidLeft)))
         m_button = Button(direction_frame, width=15, text="Middle", bg="white", fg="Black",
-                          command=(self.set_head_pos, Waist.Middle))
+                          command=(lambda: self.set_head_pos(Waist.Middle)))
         mr_button = Button(direction_frame, width=15, text="Middle Right", bg="white", fg="Black",
-                           command=(self.set_head_pos, Waist.MidRight))
+                           command=(lambda: self.set_head_pos(Waist.MidRight)))
         fr_button = Button(direction_frame, width=15, text="Full Right", bg="white", fg="Black",
-                           command=(self.set_head_pos, Waist.FarRight))
+                           command=(lambda: self.set_head_pos(Waist.FarRight)))
         # Make Labels
         direction_label = Label(direction_frame, bg="white", text="Choose speed:")
 
@@ -184,6 +186,8 @@ class GUI:
         fr_button.grid(row=1, column=5, sticky="senw")
 
     def go_button_clicked(self):
+        self.scheduler.guiQueue = self.queuedCommands
+        self.scheduler.run()
         print("The milk done poured")
 
     def main(self):

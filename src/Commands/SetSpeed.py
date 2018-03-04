@@ -3,12 +3,13 @@ from TimedCommand import TimedCommand
 from Maestro import Controller
 
 class SetSpeed(TimedCommand):
-	def __init__(self, channel, timeout, speed):
+	def __init__(self, channel, timeout, speed, parallel = False):
                 self.channel = channel
                 self.controller = Controller()
                 self.speed = speed
                 self.controller.setTarget(1, 6000)
                 self.controller.setTarget(2, 6000)
+                self.parallel = parallel
                 print("Constructing a SetSpeed command")
 		super(SetSpeed, self).__init__(timeout)
                 

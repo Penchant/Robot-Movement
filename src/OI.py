@@ -25,7 +25,7 @@ class OI:
 		frame.bind("<KeyRelease>", self.keyup)
 		frame.focus_set()
                 #frame.pack()
-
+                self.tk.protocol("WM_DELETE_WINDOW", self.disable)
                 self.speed = Drivetrain.Slow
 		self.gui = GUI(self.tk, self.robot.scheduler)
                 
