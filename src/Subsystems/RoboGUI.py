@@ -26,8 +26,16 @@ class GUI:
     def add_command(self):
         self.duration = self.duration_spinbox.get()
 
-        SetPoint = namedtuple('SetPoint', ['channel', 'timeout', 'target', 'parallel'])
-        temp = SetPoint(channel = self.channel, timeout = self.duration, target = self.target, parallel = self.parallel.get())
+        if channel == 1:
+            self.target = self.target + 6000 if self.fb == 'Forward' else 6000 - self.target
+        elif channel == 2:
+            self.target = self.target + 6000 if self.fb == 'Left' else 6000 - self.target
+        elif channel = 3:
+            self.channel = 4 if self.fb == 'Horizontal' else 3
+            self.target = self.head_scale.get() * 3000 / self.head_scale['to'] + 6000
+
+        SetPoint = namedtuple('SetPoint', ['channel', 'timeout', 'target', 'parallel', 'index'])
+        temp = SetPoint(channel = self.channel, timeout = self.duration, target = self.target, parallel = self.parallel.get(), index = len(self.queuedCommands))
         self.queuedCommands.append(temp)
         print("Command Added" + str(temp) + str(self.parallel.get()))
         self.popup.destroy()
@@ -111,40 +119,44 @@ class GUI:
         self.initialize_popup()
         self.speed_frame_init()
         self.option_init("Forward", "Backward")
+        self.channel = 1
 
     def l_button_clicked(self):
         self.initialize_popup()
         self.speed_frame_init()
         self.option_init("Right", "Left")
+        self.channel = 2
 
     def h_button_clicked(self):
-        self.initialize_popup(1)
-
+        self.initialize_popup()
+        self.option_init("Vertical", "Horizontal")
+        self.channel = 3
         # Make frames
         direction_ud_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.25 * GUI.POP_WIDTH, pady=5,
                                    padx=3)
-        direction_lr_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.25 * GUI.POP_WIDTH, pady=5,
-                                    padx=3)
+        #direction_lr_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.25 * GUI.POP_WIDTH, pady=5,
+        #                            padx=3)
         direction_ud_frame.grid(row=0, column=0, sticky="w")
-        direction_lr_frame.grid(row=1, column=0, sticky="w")
+        #direction_lr_frame.grid(row=1, column=0, sticky="w")
 
         # make buttons
-        ud_scale = Scale(direction_ud_frame, bg='White', bd=4, from_=-10, to=10, resolution=1, orient=HORIZONTAL,
+        self.head_scale = Scale(direction_ud_frame, bg='White', bd=4, from_=-10, to=10, resolution=1, orient=HORIZONTAL,
                         sliderlength=30, length=400, width=30)
-        lr_scale = Scale(direction_lr_frame, bg='White', bd=4, from_=-10, to=10, resolution=1, orient=HORIZONTAL,
-                          sliderlength=30, length=400, width=30)
+        #self.lr_scale = Scale(direction_lr_frame, bg='White', bd=4, from_=-10, to=10, resolution=1, orient=HORIZONTAL,
+        #                  sliderlength=30, length=400, width=30)
         # Make Labels
-        ud_label = Label(direction_ud_frame, bg="white", text="Adjust slider to look up or down:")
-        lr_label = Label(direction_lr_frame, bg='White', text="Adjust slider to look left or right:")
+        ud_label = Label(direction_ud_frame, bg="white", text="Adjust slider to look up/down or left/right:")
+        #lr_label = Label(direction_lr_frame, bg='White', text="Adjust slider to look left or right:")
 
         #Add buttons and labels
         ud_label.grid(row=1, column=1, sticky='w')
-        ud_scale.grid(row=1, column=2, sticky='e')
-        lr_label.grid(row=1, column=1, sticky="w")
-        lr_scale.grid(row=1, column=2, sticky="e")
+        self.head_scale.grid(row=1, column=2, sticky='e')
+        #lr_label.grid(row=1, column=1, sticky="w")
+        #lr_scale.grid(row=1, column=2, sticky="e")
 
     def w_button_clicked(self):
         self.initialize_popup()
+        self.channel = 0
         # Make frames
         direction_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.25 * GUI.POP_WIDTH, pady=5, padx=3)
         direction_frame.grid(row=0, column=0, sticky="w")
@@ -212,14 +224,14 @@ class GUI:
 
         #Make Labels
         l0 = Label(queue_frame, bg="white", text="Queue:", font = 'Helvetica 14')
-        l1 = Label(queue_frame, bg="white", text="Move Forward, duration = 1, medium, P", font = 'Helvetica 12')
-        l2 = Label(queue_frame, bg="white", text="Move Forward, duration = 1, medium", font = 'Helvetica 12')
-        l3 = Label(queue_frame, bg="white", text="Move Forward, duration = 1, medium", font = 'Helvetica 12')
-        l4 = Label(queue_frame, bg="white", text="Move Forward, duration = 1", font = 'Helvetica 12')
-        l5 = Label(queue_frame, bg="white", text="Move Forward, duration = 1", font = 'Helvetica 12')
-        l6 = Label(queue_frame, bg="white", text="Move Forward, duration = 1", font = 'Helvetica 12')
-        l7 = Label(queue_frame, bg="white", text="Move Forward, duration = 1", font = 'Helvetica 12')
-        l8 = Label(queue_frame, bg="white", text="Move Forward, duration = 1", font = 'Helvetica 12')
+        l1 = Button(queue_frame, bg="white", text="Move Forward, duration = 1, medium, P", font = 'Helvetica 12')
+        l2 = Button(queue_frame, bg="white", text="Move Forward, duration = 1, medium", font = 'Helvetica 12')
+        l3 = Button(queue_frame, bg="white", text="Move Forward, duration = 1, medium", font = 'Helvetica 12')
+        l4 = Button(queue_frame, bg="white", text="Move Forward, duration = 1", font = 'Helvetica 12')
+        l5 = Button(queue_frame, bg="white", text="Move Forward, duration = 1", font = 'Helvetica 12')
+        l6 = Button(queue_frame, bg="white", text="Move Forward, duration = 1", font = 'Helvetica 12')
+        l7 = Button(queue_frame, bg="white", text="Move Forward, duration = 1", font = 'Helvetica 12')
+        l8 = Button(queue_frame, bg="white", text="Move Forward, duration = 1", font = 'Helvetica 12')
 
         # Add buttons to frames
         fb_button.grid(row=0, column=0, sticky="nsew")
