@@ -7,10 +7,7 @@ class TimedCommand(Command):
                 self.startTime = -1
 		self.time = timeout
 	def _initialization(self):
-                print("Initializing Timed command")
                 self.startTime = int(round(time.time() * 1000))
-                print(self.startTime)
-                return 
         def _isFinished(self):
                 if self.startTime == -1:
                         self.startTime = int(round(time.time()*1000))

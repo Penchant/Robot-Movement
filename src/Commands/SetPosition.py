@@ -6,9 +6,11 @@ class SetPosition(Command.Command):
 		super(SetPosition, self).__init__(timeout)
 		self.channel = channel
 		self.position = position
-                self.parallel = False
+		self.parallel = parallel
+		self.isFinished = False
 	def _initialization(self):
 		RobotMap.controller.setTarget(self.channel, self.position)
+		self.isFinished = True
 
 	def _isFinished(self):
-		return True
+		return self.isFinished

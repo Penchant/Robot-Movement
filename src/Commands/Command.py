@@ -25,8 +25,8 @@ class Command(object):
 		pass
 	# Runs the command
 	def run(self):
-                self.enable = True
+		self.enable = True
 		self._initialization()
 		while(not self._isFinished() and self.enable == True):
-                        self._execute()
+			self._execute()
 		self._end()
