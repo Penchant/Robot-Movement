@@ -3,6 +3,7 @@ from collections import namedtuple
 #from Scheduler import Scheduler
 from Drivetrain import Drivetrain
 from Waist import Waist
+import threading 
 class GUI:
     WIDTH = 800
     HEIGHT = 450
@@ -22,10 +23,10 @@ class GUI:
         self.target = 0
 
     def set_speed(self, speed):
-        print("Speed being set")
         self.target = speed
 
     def add_command(self):
+
         self.duration = self.duration_spinbox.get()
         if self.channel == 1:
             self.target = self.target + 6000 if self.fb.get() == 'Forward' else 6000 - self.target
@@ -38,12 +39,10 @@ class GUI:
         SetPoint = namedtuple('SetPoint', ['channel', 'timeout', 'target', 'parallel', 'index'])
         temp = SetPoint(channel = self.channel, timeout = int(float(self.duration)*1000), target = self.target, parallel = self.parallel.get(), index = len(self.queuedCommands))
         self.queuedCommands.append(temp)
-        print("Command Added" + str(temp))
         self.popup.destroy()
 
     def cancel(self):
         self.popup.destroy()
-        print("canceling")
 
     def set_angle(self, angle):
         self.target = angle
@@ -186,9 +185,31 @@ class GUI:
         mr_button.grid(row=1, column=4, sticky="senw")
         fr_button.grid(row=1, column=5, sticky="senw")
 
+    def display_gif(self, gifName, totalFrames):
+        popup = Toplevel()
+        frameCount = 0
+        i = 0
+        while(self.scheduler.running == True):
+            gif = PhotoImage(file = gifName, format = "gif -index" + str(frameCount))
+            stop_button = Button(popup, command = self.stop, image = gif)
+            stop_button.image = gif
+            time.sleep(.02)
+            i +=1
+            if(i > 50):
+                if(frameCount == (totalFrames -1)):
+                    frameCount = 0
+                else:
+                    frameCount += 1
+
+        popup.destroy()
+
+    def stop(self):
+        self.scheduler.enable = False
+
     def go_button_clicked(self):
         self.scheduler.guiQueue = self.queuedCommands
         self.scheduler.run()
+        threading.Thread(None, lambda: self.display_gif("caution.gif", 5))
         print("The milk done poured")
 
     def main(self):

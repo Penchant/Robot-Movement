@@ -32,12 +32,15 @@ class Scheduler:
                 self.current_command_thread = threading.Thread(None, self.current_command.run)
                 self.current_command_thread.start()
             except Empty:
+            	self.enable = False
                 pass
 
     def loop(self):
+    	self.running = True
         while (self.enable):
             self.execute()
         complete = self.current_command._isFinished()
+       	self.running = False
         if ((self.current_command != None) and (complete == False)):
             self.current_command.enable = False
 
