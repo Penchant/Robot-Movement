@@ -27,13 +27,12 @@ class GUI:
 
     def add_command(self):
         self.duration = self.duration_spinbox.get()
-
         if self.channel == 1:
-            self.target = self.target + 6000 if self.fb == 'Forward' else 6000 - self.target
+            self.target = self.target + 6000 if self.fb.get() == 'Forward' else 6000 - self.target
         elif self.channel == 2:
-            self.target = self.target + 6000 if self.fb == 'Left' else 6000 - self.target
+            self.target = self.target + 6000 if self.fb.get() == 'Left' else 6000 - self.target
         elif self.channel == 3:
-            self.channel = 4 if self.fb == 'Horizontal' else 3
+            self.channel = 4 if self.fb.get() == 'Horizontal' else 3
             self.target = self.head_scale.get() * 3000 / self.head_scale['to'] + 6000
 
         SetPoint = namedtuple('SetPoint', ['channel', 'timeout', 'target', 'parallel', 'index'])
@@ -89,6 +88,7 @@ class GUI:
         cancel_button.grid(row=0, column=4, sticky='e')
 
     def speed_frame_init(self):
+        self.set_speed(Drivetrain.Slow)
         speed_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.20 * GUI.POP_WIDTH, pady=5, padx=3)
         speed_frame.grid(row=0, column=0, sticky="w")
         # make buttons
@@ -159,6 +159,7 @@ class GUI:
     def w_button_clicked(self):
         self.initialize_popup()
         self.channel = 0
+        self.set_head_pos(Waist.Middle)
         # Make frames
         direction_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.25 * GUI.POP_WIDTH, pady=5, padx=3)
         direction_frame.grid(row=0, column=0, sticky="w")
