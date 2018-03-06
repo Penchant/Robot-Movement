@@ -4,6 +4,8 @@ from collections import namedtuple
 from Drivetrain import Drivetrain
 from Waist import Waist
 import threading 
+import time
+
 class GUI:
     WIDTH = 800
     HEIGHT = 450
@@ -187,11 +189,12 @@ class GUI:
 
     def display_gif(self, gifName, totalFrames):
         popup = Toplevel()
+        popup.attributes("-fullscreen", True)
         print("Popup created")
         frameCount = 0
         i = 0
-        while(self.scheduler.running == True):
-            gif = PhotoImage(file = gifName, format = "gif -index" + str(frameCount))
+        while(self.scheduler.running == True or True):
+            gif = PhotoImage(file = gifName, format = "gif -index " + str(frameCount))
             stop_button = Button(popup, command = self.stop, image = gif)
             stop_button.image = gif
             stop_button.grid(column ="0", row ="0")
@@ -212,7 +215,7 @@ class GUI:
     def go_button_clicked(self):
         self.scheduler.guiQueue = self.queuedCommands
         self.scheduler.run()
-        gifthread =threading.Thread(None, lambda: self.display_gif("caution.gif", 5))
+        gifthread =threading.Thread(None, lambda: self.display_gif("caution.gif", 4))
         gifthread.start()
         print("The milk done poured")
 
