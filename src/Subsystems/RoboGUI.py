@@ -42,7 +42,7 @@ class GUI:
         SetPoint = namedtuple('SetPoint', ['channel', 'timeout', 'target', 'parallel', 'index'])
         temp = SetPoint(channel = self.channel, timeout = int(float(self.duration)*1000), target = self.target, parallel = self.parallel.get(), index = len(self.queuedCommands))
         self.queuedCommands.append(temp)
-        self.add_to_queue(self)
+        self.add_to_queue()
         self.popup.destroy()
 
     def add_to_queue(self):
@@ -60,8 +60,8 @@ class GUI:
         else:
             text = "Move Head " + str(self.head_scale.get()) + ", Duration = " + check
         queue_button = Button(self.queue_frame, bg="white", text= text, font = 'Helvetica 12')
-        queue_button.grid(row = self.row_cntr, sticky = "nw")
-        self.row_cntr +=1
+        queue_button.grid(row = self.row_counter, sticky = "nw")
+        self.row_counter +=1
 
     def cancel(self):
         self.popup.destroy()
@@ -187,8 +187,8 @@ class GUI:
         direction_frame.grid(row=0, column=0, sticky="w")
 
         # make buttons
-        fl_button = Button(direction_frame, width=15, text="Far Left", bg="white", fg="Black",
-                           command=(lambda: self.set_head_pos(Waist.FarLeft, "Far Left")))
+        fl_button = Button(direction_frame, width=15, text="Far Left", bg="white", fg="Black")
+      #                     command=(lambda: self.set_head_pos(Waist.FarLeft, "Far Left")))
         ml_button = Button(direction_frame, width=15, text="Middle Left", bg="white", fg="Black",
                            command=(lambda: self.set_head_pos(Waist.MidLeft, "Middle Left")))
         m_button = Button(direction_frame, width=15, text="Middle", bg="white", fg="Black",
