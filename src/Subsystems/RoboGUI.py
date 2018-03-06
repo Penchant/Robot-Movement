@@ -83,12 +83,18 @@ class GUI:
         elif self.channel == 2:
             text = "Rotate " + self.fb.get() + ", D= " + str(self.duration) +", " + str(self.target) + check
         elif self.channel == 3:
-            text = "Rotate Head " + str(self.head_scale.get()) + ", D= " + str(self.Duration) + ", " + check
+            text = "Rotate Head " + str(self.head_scale.get()) + ", D= " + str(self.duration) + ", " + check
         else:
             text = "Move Head " + str(self.head_scale.get()) + ", D= " + str(self.duration) + ", " + check
         self.queue_button = Button(self.queue_frame, bg="white", text= text, font = 'Helvetica 12')
         self.queue_button.grid(row = self.row_counter, sticky = "nw")
         self.row_counter +=1
+
+    def clear_queue(self):
+        for button in self.queue_frame.grid_slaves():
+            if int(button.grid_info()["row"]) > 0:
+                button.grid_forget()
+        self.row_counter = 1
 
     def cancel(self):
         self.popup.destroy()
@@ -154,11 +160,6 @@ class GUI:
         slow_button.grid(row=1, column=1, sticky="senw")
         med_button.grid(row=1, column=2, sticky="senw")
         fast_button.grid(row=1, column=3, sticky="senw")
-
-    def clear_queue(self):
-        while (self.row_counter > 1):
-            self.queueButton.grid_forget()
-            self.rowCounter -=1
 
     def option_init(self, option1, option2):
         self.fb.set(option1)
