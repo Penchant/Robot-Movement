@@ -11,9 +11,10 @@ class SetSpeed(TimedCommand):
                 self.controller.setTarget(2, 6000)
                 self.parallel = parallel
                 super(SetSpeed, self).__init__(timeout)
-
-    def _execute(self):
+                return
+                
+        def _execute(self):
                 self.controller.setTarget(self.channel, self.speed)
 
-    def _end(self):
+        def _end(self):
 		self.controller.setTarget(self.channel, 6000)

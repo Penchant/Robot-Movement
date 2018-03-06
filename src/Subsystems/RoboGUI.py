@@ -187,18 +187,21 @@ class GUI:
 
     def display_gif(self, gifName, totalFrames):
         popup = Toplevel()
+        print("Popup created")
         frameCount = 0
         i = 0
         while(self.scheduler.running == True):
             gif = PhotoImage(file = gifName, format = "gif -index" + str(frameCount))
             stop_button = Button(popup, command = self.stop, image = gif)
             stop_button.image = gif
+            stop_button.grid(column ="0", row ="0")
             time.sleep(.02)
             i +=1
             if(i > 50):
                 if(frameCount == (totalFrames -1)):
                     frameCount = 0
                 else:
+                    print("Updating frames")
                     frameCount += 1
 
         popup.destroy()
@@ -209,7 +212,8 @@ class GUI:
     def go_button_clicked(self):
         self.scheduler.guiQueue = self.queuedCommands
         self.scheduler.run()
-        threading.Thread(None, lambda: self.display_gif("caution.gif", 5))
+        gifthread =threading.Thread(None, lambda: self.display_gif("caution.gif", 5))
+        gifthread.start()
         print("The milk done poured")
 
     def main(self):
