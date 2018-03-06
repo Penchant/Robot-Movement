@@ -4,6 +4,8 @@ from collections import namedtuple
 from Drivetrain import Drivetrain
 from Waist import Waist
 import threading 
+import time
+
 class GUI:
     WIDTH = 800
     HEIGHT = 450
@@ -40,7 +42,7 @@ class GUI:
         SetPoint = namedtuple('SetPoint', ['channel', 'timeout', 'target', 'parallel', 'index'])
         temp = SetPoint(channel = self.channel, timeout = int(float(self.duration)*1000), target = self.target, parallel = self.parallel.get(), index = len(self.queuedCommands))
         self.queuedCommands.append(temp)
-        self.add_to_queue(self)
+        self.add_to_queue()
         self.popup.destroy()
 
     def add_to_queue(self):
@@ -58,8 +60,8 @@ class GUI:
         else:
             text = "Move Head " + str(self.head_scale.get()) + ", Duration = " + check
         queue_button = Button(self.queue_frame, bg="white", text= text, font = 'Helvetica 12')
-        queue_button.grid(row = self.row_cntr, sticky = "nw")
-        self.row_cntr +=1
+        queue_button.grid(row = self.row_counter, sticky = "nw")
+        self.row_counter +=1
 
     def cancel(self):
         self.popup.destroy()
@@ -185,8 +187,8 @@ class GUI:
         direction_frame.grid(row=0, column=0, sticky="w")
 
         # make buttons
-        fl_button = Button(direction_frame, width=15, text="Far Left", bg="white", fg="Black",
-                           command=(lambda: self.set_head_pos(Waist.FarLeft, "Far Left")))
+        fl_button = Button(direction_frame, width=15, text="Far Left", bg="white", fg="Black")
+      #                     command=(lambda: self.set_head_pos(Waist.FarLeft, "Far Left")))
         ml_button = Button(direction_frame, width=15, text="Middle Left", bg="white", fg="Black",
                            command=(lambda: self.set_head_pos(Waist.MidLeft, "Middle Left")))
         m_button = Button(direction_frame, width=15, text="Middle", bg="white", fg="Black",
@@ -208,11 +210,12 @@ class GUI:
 
     def display_gif(self, gifName, totalFrames):
         popup = Toplevel()
+        popup.attributes("-fullscreen", True)
         print("Popup created")
         frameCount = 0
         i = 0
-        while(self.scheduler.running == True):
-            gif = PhotoImage(file = gifName, format = "gif -index" + str(frameCount))
+        while(self.scheduler.running == True or True):
+            gif = PhotoImage(file = gifName, format = "gif -index " + str(frameCount))
             stop_button = Button(popup, command = self.stop, image = gif)
             stop_button.image = gif
             stop_button.grid(column ="0", row ="0")
@@ -233,7 +236,7 @@ class GUI:
     def go_button_clicked(self):
         self.scheduler.guiQueue = self.queuedCommands
         self.scheduler.run()
-        gifthread =threading.Thread(None, lambda: self.display_gif("caution.gif", 5))
+        gifthread =threading.Thread(None, lambda: self.display_gif("caution.gif", 4))
         gifthread.start()
         print("The milk done poured")
 
