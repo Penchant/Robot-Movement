@@ -47,18 +47,18 @@ class GUI:
 
     def add_to_queue(self):
         check = ""
-        if(self.parallel):
+        if(self.parallel==True):
             check = "P"
         if self.channel == 0:
-            text = "Rotate Waist " + self.pos_string + ", Duration = " + check
+            text = "Rotate Waist " + self.pos_string + ", D= " + str(self.duration)+ ", " + check
         elif self.channel == 1:
-            text = "Move " + self.fb.get() + ", Duration = " + str(self.duration) + str(self.target) + check
+            text = "Move " + self.fb.get() + ", D= " + str(self.duration) + ", " + check
         elif self.channel == 2:
-            text = "Rotate " + self.fb.get() + ", Duration = " + str(self.duration) + str(self.target) + check
+            text = "Rotate " + self.fb.get() + ", D= " + str(self.duration) +", " + str(self.target) + check
         elif self.channel == 3:
-            text = "Rotate Head " + str(self.head_scale.get()) + ", Duration = " + check
+            text = "Rotate Head " + str(self.head_scale.get()) + ", D= " + str(self.Duration) + ", " + check
         else:
-            text = "Move Head " + str(self.head_scale.get()) + ", Duration = " + check
+            text = "Move Head " + str(self.head_scale.get()) + ", D= " + str(self.duration) + ", " + check
         queue_button = Button(self.queue_frame, bg="white", text= text, font = 'Helvetica 12')
         queue_button.grid(row = self.row_counter, sticky = "nw")
         self.row_counter +=1
@@ -181,7 +181,7 @@ class GUI:
     def w_button_clicked(self):
         self.initialize_popup()
         self.channel = 0
-        self.set_head_pos(Waist.Middle)
+        self.set_head_pos(Waist.Middle, "Middle")
         # Make frames
         direction_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.25 * GUI.POP_WIDTH, pady=5, padx=3)
         direction_frame.grid(row=0, column=0, sticky="w")
@@ -209,34 +209,40 @@ class GUI:
         fr_button.grid(row=1, column=5, sticky="senw")
 
     def display_gif(self, gifName, totalFrames):
+        self.gifDisplay = True
         popup = Toplevel()
         popup.attributes("-fullscreen", True)
         print("Popup created")
+        stop_button = Button(popup, command = self.stop, bg = "Red", text="Stop")
+        gifLabel = Label(popup)
+        gifLabel.grid(column=0, row=0)
+        stop_button.grid(column=0, row=1)
         frameCount = 0
         i = 0
-        while(self.scheduler.running == True or True):
+        while(self.gifDisplay == True):
             gif = PhotoImage(file = gifName, format = "gif -index " + str(frameCount))
-            stop_button = Button(popup, command = self.stop, image = gif)
-            stop_button.image = gif
-            stop_button.grid(column ="0", row ="0")
-            time.sleep(.02)
+            gifLabel.configure(image=gif)
+            gifLabel.image = gif
+            time.sleep(.1)
             i +=1
-            if(i > 50):
+            if(i > 0):
                 if(frameCount == (totalFrames -1)):
                     frameCount = 0
                 else:
-                    print("Updating frames")
                     frameCount += 1
+                i = 0
 
         popup.destroy()
 
     def stop(self):
         self.scheduler.enable = False
-
+        self.gifDisplay = False
+        
     def go_button_clicked(self):
         self.scheduler.guiQueue = self.queuedCommands
-        self.scheduler.run()
-        gifthread =threading.Thread(None, lambda: self.display_gif("caution.gif", 4))
+        schedulerThread =threading.Thread(None, self.scheduler.run)
+        schedulerThread.start()
+        gifthread =threading.Thread(None, lambda: self.display_gif("tenor.gif", 4))
         gifthread.start()
         print("The milk done poured")
 
@@ -251,7 +257,7 @@ class GUI:
                                  padx=0)
         bot_button_frame = Frame(self.window, bg="black", width=.75 * GUI.WIDTH, height=.50 * GUI.HEIGHT, pady=0,
                                  padx=0)
-        self.queue_frame = Frame(self.window, bg="white", width=GUI.WIDTH, height=.50 * GUI.HEIGHT, pady=0, padx=0)
+        self.queue_frame = Frame(self.window, bg="white", width=.25 * GUI.WIDTH, height=.50 * GUI.HEIGHT, pady=0, padx=0)
         start_frame = Frame(self.window, bg="black", width=.25 * GUI.WIDTH, height=.25 * GUI.HEIGHT, pady=0, padx=0)
 
         # Main container layout
@@ -264,15 +270,15 @@ class GUI:
         start_frame.grid(row=2, column=1)
 
         # Make buttons
-        fb_button = Button(top_button_frame, width=35, height=13, text="FORWARD/BACKWARD", bg="white", fg="Black",
+        fb_button = Button(top_button_frame, width=30, height=13, text="FORWARD/BACKWARD", bg="white", fg="Black",
                           command=self.f_button_clicked)
-        lr_button = Button(top_button_frame, width=35, height=13, text="ROTATE", bg="white", fg="Black",
+        lr_button = Button(top_button_frame, width=30, height=13, text="ROTATE", bg="white", fg="Black",
                           command=self.l_button_clicked)
-        h_button = Button(bot_button_frame, width=35, height=13, text="HEAD SWIVEL", bg="white", fg="Black",
+        h_button = Button(bot_button_frame, width=30, height=13, text="HEAD SWIVEL", bg="white", fg="Black",
                           command=self.h_button_clicked)
-        w_button = Button(bot_button_frame, width=35, height=13, text="WAIST SWIVEL", bg="white", fg="Black",
+        w_button = Button(bot_button_frame, width=30, height=13, text="WAIST SWIVEL", bg="white", fg="Black",
                           command=self.w_button_clicked)
-        go_button = Button(start_frame, width=40, height=5, text="Go!", bg="green2", fg="Black",
+        go_button = Button(start_frame, width=30, height=5, text="Go!", bg="green2", fg="Black",
                            command=self.go_button_clicked)
 
 
