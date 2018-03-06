@@ -23,6 +23,7 @@ class GUI:
         self.scheduler = scheduler
         self.queuedCommands = []
         self.target = 0
+        self.row_counter = 0
 
     def set_speed(self, speed):
         self.target = speed
@@ -41,7 +42,26 @@ class GUI:
         SetPoint = namedtuple('SetPoint', ['channel', 'timeout', 'target', 'parallel', 'index'])
         temp = SetPoint(channel = self.channel, timeout = int(float(self.duration)*1000), target = self.target, parallel = self.parallel.get(), index = len(self.queuedCommands))
         self.queuedCommands.append(temp)
+        self.add_to_queue(self)
         self.popup.destroy()
+
+    def add_to_queue(self):
+        check = ""
+        if(self.parallel):
+            check = "P"
+        if self.channel == 0:
+            text = "Rotate Waist " + self.pos_string + ", Duration = " + check
+        elif self.channel == 1:
+            text = "Move " + self.fb.get() + ", Duration = " + str(self.duration) + str(self.target) + check
+        elif self.channel == 2:
+            text = "Rotate " + self.fb.get() + ", Duration = " + str(self.duration) + str(self.target) + check
+        elif self.channel == 3:
+            text = "Rotate Head " + str(self.head_scale.get()) + ", Duration = " + check
+        else:
+            text = "Move Head " + str(self.head_scale.get()) + ", Duration = " + check
+        queue_button = Button(self.queue_frame, bg="white", text= text, font = 'Helvetica 12')
+        queue_button.grid(row = self.row_cntr, sticky = "nw")
+        self.row_cntr +=1
 
     def cancel(self):
         self.popup.destroy()
@@ -49,8 +69,9 @@ class GUI:
     def set_angle(self, angle):
         self.target = angle
 
-    def set_head_pos(self, pos):
-        self.head_pos = pos
+    def set_head_pos(self, pos, pos_string):
+        self.target = pos
+        self.pos_string = pos_string
     def initialize_popup(self, adjustment = 0):
         self.popup = Toplevel(self.window)
         self.popup.configure(background='White')
@@ -166,16 +187,16 @@ class GUI:
         direction_frame.grid(row=0, column=0, sticky="w")
 
         # make buttons
-        fl_button = Button(direction_frame, width=15, text="Full Left", bg="white", fg="Black",
-                           command=(lambda: self.set_head_pos(Waist.FarLeft)))
+        fl_button = Button(direction_frame, width=15, text="Far Left", bg="white", fg="Black",
+                           command=(lambda: self.set_head_pos(Waist.FarLeft, "Far Left")))
         ml_button = Button(direction_frame, width=15, text="Middle Left", bg="white", fg="Black",
-                           command=(lambda: self.set_head_pos(Waist.MidLeft)))
+                           command=(lambda: self.set_head_pos(Waist.MidLeft, "Middle Left")))
         m_button = Button(direction_frame, width=15, text="Middle", bg="white", fg="Black",
-                          command=(lambda: self.set_head_pos(Waist.Middle)))
+                          command=(lambda: self.set_head_pos(Waist.Middle, "Middle")))
         mr_button = Button(direction_frame, width=15, text="Middle Right", bg="white", fg="Black",
-                           command=(lambda: self.set_head_pos(Waist.MidRight)))
-        fr_button = Button(direction_frame, width=15, text="Full Right", bg="white", fg="Black",
-                           command=(lambda: self.set_head_pos(Waist.FarRight)))
+                           command=(lambda: self.set_head_pos(Waist.MidRight, "Middle Right")))
+        fr_button = Button(direction_frame, width=15, text="Far Right", bg="white", fg="Black",
+                           command=(lambda: self.set_head_pos(Waist.FarRight, "Far Right")))
         # Make Labels
         direction_label = Label(direction_frame, bg="white", text="Choose speed:")
 
@@ -230,7 +251,7 @@ class GUI:
                                  padx=0)
         bot_button_frame = Frame(self.window, bg="black", width=.75 * GUI.WIDTH, height=.50 * GUI.HEIGHT, pady=0,
                                  padx=0)
-        queue_frame = Frame(self.window, bg="white", width=GUI.WIDTH, height=.50 * GUI.HEIGHT, pady=0, padx=0)
+        self.queue_frame = Frame(self.window, bg="white", width=GUI.WIDTH, height=.50 * GUI.HEIGHT, pady=0, padx=0)
         start_frame = Frame(self.window, bg="black", width=.25 * GUI.WIDTH, height=.25 * GUI.HEIGHT, pady=0, padx=0)
 
         # Main container layout
@@ -239,7 +260,7 @@ class GUI:
 
         top_button_frame.grid(row=0, column=0)
         bot_button_frame.grid(row=2, column = 0)
-        queue_frame.grid(row=0, column=1, sticky = "nw")
+        self.queue_frame.grid(row=0, column=1, sticky = "nw")
         start_frame.grid(row=2, column=1)
 
         # Make buttons
@@ -256,15 +277,7 @@ class GUI:
 
 
         #Make Labels
-        l0 = Label(queue_frame, bg="white", text="Queue:", font = 'Helvetica 14')
-        l1 = Button(queue_frame, bg="white", text="Move Forward, duration = 1, medium, P", font = 'Helvetica 12')
-        l2 = Button(queue_frame, bg="white", text="Move Forward, duration = 1, medium", font = 'Helvetica 12')
-        l3 = Button(queue_frame, bg="white", text="Move Forward, duration = 1, medium", font = 'Helvetica 12')
-        l4 = Button(queue_frame, bg="white", text="Move Forward, duration = 1", font = 'Helvetica 12')
-        l5 = Button(queue_frame, bg="white", text="Move Forward, duration = 1", font = 'Helvetica 12')
-        l6 = Button(queue_frame, bg="white", text="Move Forward, duration = 1", font = 'Helvetica 12')
-        l7 = Button(queue_frame, bg="white", text="Move Forward, duration = 1", font = 'Helvetica 12')
-        l8 = Button(queue_frame, bg="white", text="Move Forward, duration = 1", font = 'Helvetica 12')
+
 
         # Add buttons to frames
         fb_button.grid(row=0, column=0, sticky="nsew")
@@ -273,15 +286,15 @@ class GUI:
         w_button.grid(row=0, column=1, sticky="SE")
 
         #Add_labels
-        l0.grid(row = 0, column =0, sticky = 'w')
-        l1.grid(row = 1, column =0, sticky = 'w')
-        l2.grid(row = 2, column =0, sticky = 'w')
-        l3.grid(row = 3, column =0, sticky = 'w')
-        l4.grid(row = 4, column =0, sticky = 'w')
-        l5.grid(row = 5, column =0, sticky = 'w')
-        l6.grid(row = 6, column =0, sticky = 'w')
-        l7.grid(row = 7, column =0, sticky = 'w')
-        l8.grid(row = 8, column =0, sticky = 'w')
+        #l0.grid(row = 0, column =0, sticky = 'w')
+        #l1.grid(row = 1, column =0, sticky = 'w')
+        #l2.grid(row = 2, column =0, sticky = 'w')
+        #l3.grid(row = 3, column =0, sticky = 'w')
+        #l4.grid(row = 4, column =0, sticky = 'w')
+        #l5.grid(row = 5, column =0, sticky = 'w')
+        #l6.grid(row = 6, column =0, sticky = 'w')
+        #l7.grid(row = 7, column =0, sticky = 'w')
+        #l8.grid(row = 8, column =0, sticky = 'w')
 
         go_button.grid(sticky="snew")
 
