@@ -6,6 +6,33 @@ from Waist import Waist
 import threading 
 import time
 
+
+class GifFrame(object):
+    def __init__(self):
+        self.frameCount = 0
+        self._window = Toplevel()
+        self._window.attributes("-fullscreen", True)
+        self.imageGIF2 = PhotoImage(file="gif.gif", format="gif -index " + str(self.frameCount))
+        self.imageLabel2 = Label(self._window, image=self.imageGIF2)
+        self.imageLabel2.pack()
+        self.imageLabel2.place(x=master.winfo_screenwidth() / 2, y=master.winfo_screenheight() / 2, anchor=CENTER)
+
+    def update(self):
+        try:
+            self.imageGIF2 = PhotoImage(file="gif.gif", format="gif -index " + str(self.frameCount))
+            self.imageLabel2.configure(image=self.imageGIF2)
+        except:
+            self.frameCount = 0
+            self.imageGIF2 = PhotoImage(file="gif.gif", format="gif -index " + str(self.frameCount))
+            self.imageLabel2.configure(image=self.imageGIF2)
+        self.frameCount += 1
+
+    def win(self):
+        return self._window
+
+    def destroy(self):
+        self._window.destroy()
+
 class GUI:
     WIDTH = 800
     HEIGHT = 450
@@ -208,6 +235,19 @@ class GUI:
         mr_button.grid(row=1, column=4, sticky="senw")
         fr_button.grid(row=1, column=5, sticky="senw")
 
+    def draw_animation(self, sm, delay):
+        sm.update()
+        sm.win().after(delay, self.draw_animation, sm, delay)
+
+
+    def run_animation(self):
+        duration = 5
+        sm = GifFrame()
+        drawThread = threading.Thread(self.draw_animation, (sm, 100))
+        drawThread.start()
+        time.sleep(duration)
+        sm.destroy()
+
     def display_gif(self, gifName, totalFrames):
         self.gifDisplay = True
         self.init_gif(gifName, totalFrames)
@@ -250,7 +290,8 @@ class GUI:
     def go_button_clicked(self):
         self.scheduler.guiQueue = self.queuedCommands
         schedulerThread =threading.Thread(None, self.scheduler.run)
-        gifthread =threading.Thread(None, lambda: self.display_gif("tenor.gif", 4))
+        #gifthread =threading.Thread(None, lambda: self.display_gif("tenor.gif", 4))
+        gifthread =threading.Thread(None, lambda: self.run_animation())
         gifthread.start()
         schedulerThread.start()
         print("The milk done poured")
