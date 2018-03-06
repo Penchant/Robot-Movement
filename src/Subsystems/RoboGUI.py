@@ -210,11 +210,17 @@ class GUI:
 
     def display_gif(self, gifName, totalFrames):
         self.gifDisplay = True
-        popup = Toplevel()
-        popup.attributes("-fullscreen", True)
+        displayThread = threading.Thread(None, self.manage_gif, (gifName, totalFrames))
+        displayThread.start()
+        displayThread.join()
+        self.gif_popup.destroy()
+
+    def manage_gif(self, gifName, totalFrames):
+        self.gif_popup = Toplevel()
+        self.gif_popup.attributes("-fullscreen", True)
         print("Popup created")
-        stop_button = Button(popup, command = self.stop, bg = "Red", text="Stop")
-        gifLabel = Label(popup)
+        stop_button = Button(self.gif_popup, command = self.stop, bg = "Red", text="Stop")
+        gifLabel = Label(self.gif_popup)
         gifLabel.grid(column=0, row=0)
         stop_button.grid(column=0, row=1)
         frameCount = 0
@@ -231,8 +237,6 @@ class GUI:
                 else:
                     frameCount += 1
                 i = 0
-
-        popup.destroy()
 
     def stop(self):
         self.scheduler.enable = False
