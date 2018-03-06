@@ -210,9 +210,11 @@ class GUI:
 
     def display_gif(self, gifName, totalFrames):
         self.gifDisplay = True
-        displayThread = threading.Thread(None, lambda: self.manage_gif(gifName, totalFrames))
+        self.init_gif(gifName, totalFrames)
+        displayThread = threading.Thread(None, lambda: self.manage_gif())
         displayThread.start()
-        displayThread.join()
+        while self.gifDisplay == True:
+            time.sleep(.1)
         self.gif_popup.destroy()
 
     def init_gif(self, gifName, totalFrames):
@@ -230,12 +232,12 @@ class GUI:
     def manage_gif(self):
         if(self.gifDisplay == True):
             self.update_gif()
-            self.gif_popup.after(100, manage_gif, self)
+            self.gif_popup.after(100, self.manage_gif, self)
 
     def update_gif(self):
         self.gif_popup.gif = PhotoImage(file = self.gif_popup.gifName, format = "gif -index " + str(self.gif_popup.frameCount))
-        self.gif_popup.gifLabel.configure(image=gif)
-        self.gif_popup.gifLabel.image = gif
+        self.gif_popup.gifLabel.configure(image=self.gif_popup.gif)
+        self.gif_popup.gifLabel.image = self.gif_popup.gif
         if(self.gif_popup.frameCount == (self.gif_popup.totalFrames -1)):
             self.gif_popup.frameCount = 0
         else:
