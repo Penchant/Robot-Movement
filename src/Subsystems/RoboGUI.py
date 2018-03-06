@@ -50,7 +50,7 @@ class GUI:
         self.scheduler = scheduler
         self.queuedCommands = []
         self.target = 0
-        self.row_counter = 0
+        self.row_counter = 1
 
     def set_speed(self, speed):
         self.target = speed
@@ -86,8 +86,8 @@ class GUI:
             text = "Rotate Head " + str(self.head_scale.get()) + ", D= " + str(self.Duration) + ", " + check
         else:
             text = "Move Head " + str(self.head_scale.get()) + ", D= " + str(self.duration) + ", " + check
-        queue_button = Button(self.queue_frame, bg="white", text= text, font = 'Helvetica 12')
-        queue_button.grid(row = self.row_counter, sticky = "nw")
+        self.queue_button = Button(self.queue_frame, bg="white", text= text, font = 'Helvetica 12')
+        self.queue_button.grid(row = self.row_counter, sticky = "nw")
         self.row_counter +=1
 
     def cancel(self):
@@ -154,6 +154,11 @@ class GUI:
         slow_button.grid(row=1, column=1, sticky="senw")
         med_button.grid(row=1, column=2, sticky="senw")
         fast_button.grid(row=1, column=3, sticky="senw")
+
+    def clear_queue(self):
+        while (self.row_counter > 1):
+            self.queueButton.grid_forget()
+            self.rowCounter -=1
 
     def option_init(self, option1, option2):
         self.fb.set(option1)
@@ -330,6 +335,7 @@ class GUI:
                           command=self.w_button_clicked)
         go_button = Button(start_frame, width=30, height=5, text="Go!", bg="green2", fg="Black",
                            command=self.go_button_clicked)
+        clear_button =Button(self.queue_frame, width=30, height = 2, text = "Clear Queue", bg = "White", command = self.clear_queue)
 
 
         #Make Labels
@@ -340,6 +346,7 @@ class GUI:
         lr_button.grid(row=0, column=1, sticky="nsew")
         h_button.grid(row=0, column=0, sticky="se")
         w_button.grid(row=0, column=1, sticky="SE")
+        clear_button.grid(row = 0, column = 0, sticky = "ne")
 
         #Add_labels
         #l0.grid(row = 0, column =0, sticky = 'w')
