@@ -12,18 +12,18 @@ class GifFrame(object):
         self.frameCount = 0
         self._window = Toplevel()
         self._window.attributes("-fullscreen", True)
-        self.imageGIF2 = PhotoImage(file="gif.gif", format="gif -index " + str(self.frameCount))
+        self.imageGIF2 = PhotoImage(file="tenor.gif", format="gif -index " + str(self.frameCount))
         self.imageLabel2 = Label(self._window, image=self.imageGIF2)
         self.imageLabel2.pack()
-        self.imageLabel2.place(x=master.winfo_screenwidth() / 2, y=master.winfo_screenheight() / 2, anchor=CENTER)
+        self.imageLabel2.place(x=GUI.WIDTH / 2, y=GUI.HEIGHT / 2, anchor=CENTER)
 
     def update(self):
         try:
-            self.imageGIF2 = PhotoImage(file="gif.gif", format="gif -index " + str(self.frameCount))
+            self.imageGIF2 = PhotoImage(file="tenor.gif", format="gif -index " + str(self.frameCount))
             self.imageLabel2.configure(image=self.imageGIF2)
         except:
             self.frameCount = 0
-            self.imageGIF2 = PhotoImage(file="gif.gif", format="gif -index " + str(self.frameCount))
+            self.imageGIF2 = PhotoImage(file="tenor.gif", format="gif -index " + str(self.frameCount))
             self.imageLabel2.configure(image=self.imageGIF2)
         self.frameCount += 1
 
@@ -243,7 +243,7 @@ class GUI:
     def run_animation(self):
         duration = 5
         sm = GifFrame()
-        drawThread = threading.Thread(self.draw_animation, (sm, 100))
+        drawThread = threading.Thread(None,lambda: self.draw_animation(sm, 100))
         drawThread.start()
         time.sleep(duration)
         sm.destroy()
