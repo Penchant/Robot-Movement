@@ -215,28 +215,31 @@ class GUI:
         displayThread.join()
         self.gif_popup.destroy()
 
-    def manage_gif(self, gifName, totalFrames):
+    def init_gif(self, gifName, totalFrames):
         self.gif_popup = Toplevel()
         self.gif_popup.attributes("-fullscreen", True)
         print("Popup created")
-        stop_button = Button(self.gif_popup, command = self.stop, bg = "Red", text="Stop")
-        gifLabel = Label(self.gif_popup)
-        gifLabel.grid(column=0, row=0)
-        stop_button.grid(column=0, row=1)
-        frameCount = 0
-        i = 0
-        while(self.gifDisplay == True):
-            gif = PhotoImage(file = gifName, format = "gif -index " + str(frameCount))
-            gifLabel.configure(image=gif)
-            gifLabel.image = gif
-            time.sleep(.1)
-            i +=1
-            if(i > 0):
-                if(frameCount == (totalFrames -1)):
-                    frameCount = 0
-                else:
-                    frameCount += 1
-                i = 0
+        self.gif_popup.stop_button = Button(self.gif_popup, command = self.stop, bg = "Red", text="Stop")
+        self.gif_popup.gifLabel = Label(self.gif_popup)
+        self.gif_popup.gifLabel.grid(column=0, row=0)
+        self.gif_popup.stop_button.grid(column=0, row=1)
+        self.gif_popup.frameCount = 0
+        self.gif_popup.gifName = gifName
+        self.gif_popup.totalFrames = totalFrames
+
+    def manage_gif(self):
+        if(self.gifDisplay == True):
+            self.update_gif()
+            self.gif_popup.after(100, manage_gif, self)
+
+    def update_gif(self):
+        self.gif_popup.gif = PhotoImage(file = self.gif_popup.gifName, format = "gif -index " + str(self.gif_popup.frameCount))
+        self.gif_popup.gifLabel.configure(image=gif)
+        self.gif_popup.gifLabel.image = gif
+        if(self.gif_popup.frameCount == (self.gif_popup.totalFrames -1)):
+            self.gif_popup.frameCount = 0
+        else:
+            self.gif_popup.frameCount += 1
 
     def stop(self):
         self.scheduler.enable = False
