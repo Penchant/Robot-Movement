@@ -45,6 +45,7 @@ class Scheduler:
             self.current_command.enable = False
 
     def createCommands(self):
+        self.schedule = Queue()
         queue = deque(self.guiQueue)
         print("Creating commands")
         while (len(queue) != 0):

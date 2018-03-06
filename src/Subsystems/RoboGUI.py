@@ -220,15 +220,15 @@ class GUI:
         direction_frame.grid(row=0, column=0, sticky="w")
 
         # make buttons
-        fl_button = Button(direction_frame, width=15, text="Far Left", bg="white", fg="Black")
+        fl_button = Button(direction_frame, width=15, text="FL", bg="white", fg="Black")
       #                     command=(lambda: self.set_head_pos(Waist.FarLeft, "Far Left")))
-        ml_button = Button(direction_frame, width=15, text="Middle Left", bg="white", fg="Black",
+        ml_button = Button(direction_frame, width=15, text="ML", bg="white", fg="Black",
                            command=(lambda: self.set_head_pos(Waist.MidLeft, "Middle Left")))
-        m_button = Button(direction_frame, width=15, text="Middle", bg="white", fg="Black",
+        m_button = Button(direction_frame, width=15, text="M", bg="white", fg="Black",
                           command=(lambda: self.set_head_pos(Waist.Middle, "Middle")))
-        mr_button = Button(direction_frame, width=15, text="Middle Right", bg="white", fg="Black",
+        mr_button = Button(direction_frame, width=15, text="MR", bg="white", fg="Black",
                            command=(lambda: self.set_head_pos(Waist.MidRight, "Middle Right")))
-        fr_button = Button(direction_frame, width=15, text="Far Right", bg="white", fg="Black",
+        fr_button = Button(direction_frame, width=15, text="FR", bg="white", fg="Black",
                            command=(lambda: self.set_head_pos(Waist.FarRight, "Far Right")))
         # Make Labels
         direction_label = Label(direction_frame, bg="white", text="Choose speed:")
@@ -347,19 +347,7 @@ class GUI:
         lr_button.grid(row=0, column=1, sticky="nsew")
         h_button.grid(row=0, column=0, sticky="se")
         w_button.grid(row=0, column=1, sticky="SE")
-        clear_button.grid(row = 0, column = 0, sticky = "ne")
-
-        #Add_labels
-        #l0.grid(row = 0, column =0, sticky = 'w')
-        #l1.grid(row = 1, column =0, sticky = 'w')
-        #l2.grid(row = 2, column =0, sticky = 'w')
-        #l3.grid(row = 3, column =0, sticky = 'w')
-        #l4.grid(row = 4, column =0, sticky = 'w')
-        #l5.grid(row = 5, column =0, sticky = 'w')
-        #l6.grid(row = 6, column =0, sticky = 'w')
-        #l7.grid(row = 7, column =0, sticky = 'w')
-        #l8.grid(row = 8, column =0, sticky = 'w')
-
+        clear_button.grid(row = 0, column = 0, sticky = "nw")
         go_button.grid(sticky="snew")
 
         self.window.mainloop()
