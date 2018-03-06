@@ -210,7 +210,7 @@ class GUI:
 
     def display_gif(self, gifName, totalFrames):
         self.gifDisplay = True
-        displayThread = threading.Thread(None, self.manage_gif, (gifName, totalFrames))
+        displayThread = threading.Thread(None, lambda: self.manage_gif(gifName, totalFrames))
         displayThread.start()
         displayThread.join()
         self.gif_popup.destroy()
@@ -245,9 +245,9 @@ class GUI:
     def go_button_clicked(self):
         self.scheduler.guiQueue = self.queuedCommands
         schedulerThread =threading.Thread(None, self.scheduler.run)
-        schedulerThread.start()
         gifthread =threading.Thread(None, lambda: self.display_gif("tenor.gif", 4))
         gifthread.start()
+        schedulerThread.start()
         print("The milk done poured")
 
     def main(self):
