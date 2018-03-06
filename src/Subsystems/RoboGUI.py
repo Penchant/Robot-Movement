@@ -220,16 +220,16 @@ class GUI:
         direction_frame.grid(row=0, column=0, sticky="w")
 
         # make buttons
-        fl_button = Button(direction_frame, width=15, text="FL", bg="white", fg="Black")
-      #                     command=(lambda: self.set_head_pos(Waist.FarLeft, "Far Left")))
-        ml_button = Button(direction_frame, width=15, text="ML", bg="white", fg="Black",
-                           command=(lambda: self.set_head_pos(Waist.MidLeft, "Middle Left")))
-        m_button = Button(direction_frame, width=15, text="M", bg="white", fg="Black",
-                          command=(lambda: self.set_head_pos(Waist.Middle, "Middle")))
-        mr_button = Button(direction_frame, width=15, text="MR", bg="white", fg="Black",
-                           command=(lambda: self.set_head_pos(Waist.MidRight, "Middle Right")))
-        fr_button = Button(direction_frame, width=15, text="FR", bg="white", fg="Black",
-                           command=(lambda: self.set_head_pos(Waist.FarRight, "Far Right")))
+        fl_button = Button(direction_frame, width=15, text="Far Left", bg="white", fg="Black",
+                           command=(lambda: self.set_head_pos(Waist.FarLeft, "FL")))
+        ml_button = Button(direction_frame, width=15, text="Middle Left", bg="white", fg="Black",
+                           command=(lambda: self.set_head_pos(Waist.MidLeft, "ML")))
+        m_button = Button(direction_frame, width=15, text="Middle", bg="white", fg="Black",
+                          command=(lambda: self.set_head_pos(Waist.Middle, "M")))
+        mr_button = Button(direction_frame, width=15, text="Middle Right", bg="white", fg="Black",
+                           command=(lambda: self.set_head_pos(Waist.MidRight, "MR")))
+        fr_button = Button(direction_frame, width=15, text="Far Right", bg="white", fg="Black",
+                           command=(lambda: self.set_head_pos(Waist.FarRight, "FR")))
         # Make Labels
         direction_label = Label(direction_frame, bg="white", text="Choose speed:")
 
