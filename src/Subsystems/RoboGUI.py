@@ -83,7 +83,7 @@ class GUI:
         elif self.channel == 2:
             text = "Rotate " + self.fb.get() + ", D= " + str(self.duration) +", " + str(self.target) + check
         elif self.channel == 3:
-            text = "Rotate Head " + str(self.head_scale.get()) + ", D= " + str(self.Duration) + ", " + check
+            text = "Rotate Head " + str(self.head_scale.get()) + ", D= " + str(self.duration) + ", " + check
         else:
             text = "Move Head " + str(self.head_scale.get()) + ", D= " + str(self.duration) + ", " + check
         self.queue_button = Button(self.queue_frame, bg="white", text= text, font = 'Helvetica 12')
