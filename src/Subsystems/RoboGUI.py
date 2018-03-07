@@ -58,42 +58,59 @@ class GUI:
         self.total_duration = 0
 
     def set_speed(self, speed):
-        self.target = speed
+        self.speed = speed
 
     def add_command(self):
 
         self.duration = self.duration_spinbox.get()
         if self.channel == 1:
-            self.target = self.target + 6000 if self.fb.get() == 'Forward' else 6000 - self.target
+            self.target = self.speed + 6000 if self.fb.get() == 'Forward' else 6000 - self.speed
         elif self.channel == 2:
-            self.target = self.target + 6000 if self.fb.get() == 'Left' else 6000 - self.target
+            self.target = self.speed + 6000 if self.fb.get() == 'Left' else 6000 - self.speed
         elif self.channel == 3:
             self.channel = 3 if self.fb.get() == 'Horizontal' else 4
             self.target = int(self.head_scale.get() * 3000 / self.head_scale['to']) + 6000
 
         SetPoint = namedtuple('SetPoint', ['channel', 'timeout', 'target', 'parallel', 'index'])
         temp = SetPoint(channel = self.channel, timeout = int(float(self.duration)*1000), target = self.target, parallel = self.parallel.get(), index = len(self.queuedCommands))
-        self.queuedCommands.append(temp)
+        if(self.edit == True):
+            self.queuedCommands[self.index] = temp
+        else:
+            self.queuedCommands.append(temp)
         self.add_to_queue()
         self.popup.destroy()
 
     def add_to_queue(self):
         check = ""
+        index = self.row_counter
         if(self.parallel==True):
             check = "P"
         if self.channel == 0:
             text = "Rotate Waist " + self.pos_string + ", D= " + str(self.duration)+ ", " + check
+            bcommand = lambda: w_button_clicked(self.duration, self.parallel.get(), self.pos, self.pos_string, True, index)
         elif self.channel == 1:
             text = "Move " + self.fb.get() + ", D= " + str(self.duration) + ", " + check
+            bcommand = lambda: f_button_clicked(self.duration, self.parallel.get(), self.fb.get(), self.speed, True, index)
         elif self.channel == 2:
             text = "Rotate " + self.fb.get() + ", D= " + str(self.duration) +", " + str(self.target) + check
+            bcommand = lambda: l_button_clicked(self.duration, self.parallel.get(), self.fb.get(), self.speed, True, index)
         elif self.channel == 3:
-            text = "Rotate Head " + str(self.head_scale.get()) + ", D= " + str(self.duration) + ", " + check
+            text = "Rotate Head " + str(self.head_scale.get()) + ", D= " + str(self.duration) + ", " + 
+            bcommand = lambda: h_button_clicked(self.duration, self.parallel.get(), self.fb.get(), self.target, True, index)
         else:
             text = "Move Head " + str(self.head_scale.get()) + ", D= " + str(self.duration) + ", " + check
+            bcommand = lambda: h_button_clicked(self.duration, self.parallel.get(), self.fb.get(), self.target, True, index)
+        if(self.edit)
         self.queue_button = Button(self.queue_frame, bg="white", text= text, font = 'Helvetica 12')
-        self.queue_button.grid(row = self.row_counter, sticky = "nw")
-        self.row_counter +=1
+        if(self.edit == True):
+            for button in self.queue_frame.grid_slaves():
+                if int(button.grid_info()["row"]) = self.index:
+                    button.grid_forget()
+            self.queue_button.grid(row = self.index, sticky = "nw", command = bcommand)
+            pass
+        else:
+            self.queue_button.grid(row = self.row_counter, sticky = "nw", command = bcommand)
+            self.row_counter +=1
         self.total_duration = self.total_duration+float(self.duration)
         print(str(self.total_duration))
     def clear_queue(self):
@@ -111,7 +128,7 @@ class GUI:
     def set_head_pos(self, pos, pos_string):
         self.target = pos
         self.pos_string = pos_string
-    def initialize_popup(self, adjustment = 0):
+    def initialize_popup(self, duration = 0.1, parallel = False, edit = False):
         self.popup = Toplevel(self.window)
         self.popup.configure(background='White')
 
@@ -124,17 +141,18 @@ class GUI:
         self.popup.grid_columnconfigure(0, weight=1)
 
         duration_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.20 * GUI.POP_WIDTH, pady=5, padx=3)
-        duration_frame.grid(row=(1 + adjustment), column=0, sticky="w")
+        duration_frame.grid(row=1, column=0, sticky="w")
         # make spinbox
         self.duration_spinbox = Spinbox(duration_frame, bg='White', from_=0.1, to=10.0, width=20, format='%2.1f',
-                                   increment='0.1', font='Helvetica 36', )
+                                   increment='0.1', font='Helvetica 36', textvariable=)
         duration_label = Label(duration_frame, bg="white", text="Enter duration in seconds:")
-        duration_label.grid(row=(0 + adjustment), sticky='w')
-        self.duration_spinbox.grid(row=(1 + adjustment), sticky='w')
+        duration_label.grid(row=0, sticky='w')
+        self.duration_spinbox.grid(row=1, sticky='w')
 
         parallel_frame.grid(row=3, column=0, sticky="w")
         # make checkbutton
         self.parallel = BooleanVar()
+        self.parallel.set(False)
         parallel_check = Checkbutton(parallel_frame, bg='White', variable = self.parallel)
         parallel_label = Label(parallel_frame, bg="White", text="Make this action run in parallel?")
         parallel_label.grid(row=0, sticky='w')
@@ -142,14 +160,14 @@ class GUI:
 
         button_frame.grid(row=4, column=0, sticky="w")
         add_button = Button(button_frame, width=15, height=1, text="Add", bg="white", fg="Black",
-                        command=self.add_command)
+                        command=lambda: self.add_command(edit))
         cancel_button = Button(button_frame, width=15, height=1, text="Cancel", bg="white", fg="Black",
                         command=self.cancel)
         add_button.grid(row=0, column=3, sticky='w')
         cancel_button.grid(row=0, column=4, sticky='e')
 
-    def speed_frame_init(self):
-        self.set_speed(Drivetrain.Slow)
+    def speed_frame_init(self, speed):
+        self.set_speed(speed)
         speed_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.20 * GUI.POP_WIDTH, pady=5, padx=3)
         speed_frame.grid(row=0, column=0, sticky="w")
         # make buttons
@@ -167,8 +185,8 @@ class GUI:
         med_button.grid(row=1, column=2, sticky="senw")
         fast_button.grid(row=1, column=3, sticky="senw")
 
-    def option_init(self, option1, option2):
-        self.fb.set(option1)
+    def option_init(self, option1, option2, option):
+        self.fb.set(option)
         option_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.20 * GUI.POP_WIDTH, pady=5, padx=3)
         option_frame.grid(row = 2, column = 0, sticky = "w")
 
@@ -178,21 +196,30 @@ class GUI:
         option_label.grid(row = 0, column = 0, sticky = 'w')
         fb_option.grid(row = 0 , column =1, sticky = 'w')
 
-    def f_button_clicked(self):
-        self.initialize_popup()
-        self.speed_frame_init()
-        self.option_init("Forward", "Backward")
+    def f_button_clicked(self, duration = 0.1, parallel = False, option = "Forward", speed = Drivetrain.Slow, edit = False, index = 0):
+        if(edit == True):
+            self.index = index
+        self.edit = edit
+        self.initialize_popup(duration, parallel, edit)
+        self.speed_frame_init(speed)
+        self.option_init("Forward", "Backward", option)
         self.channel = 1
 
-    def l_button_clicked(self):
+    def l_button_clicked(self, duration = 0.1, parallel = False, option = "Right", speed = Drivetrain.Slow, edit = False, index = 0):
+        if(edit == True):
+            self.index = index
+        self.edit = edit
         self.initialize_popup()
-        self.speed_frame_init()
-        self.option_init("Right", "Left")
+        self.speed_frame_init(speed)
+        self.option_init("Right", "Left", option)
         self.channel = 2
 
-    def h_button_clicked(self):
+    def h_button_clicked(self, duration = 0.1, parallel = False, option = "Vertical", scale = 0, edit = False, index = 0):
+        if(edit == True):
+            self.index = index
+        self.edit = edit
         self.initialize_popup()
-        self.option_init("Vertical", "Horizontal")
+        self.option_init("Vertical", "Horizontal", option)
         self.channel = 3
         # Make frames
         direction_ud_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.25 * GUI.POP_WIDTH, pady=5,
@@ -205,6 +232,7 @@ class GUI:
         # make buttons
         self.head_scale = Scale(direction_ud_frame, bg='White', bd=4, from_=-10, to=10, resolution=1, orient=HORIZONTAL,
                         sliderlength=30, length=400, width=30)
+        self.head_scale.set(scale)
         #self.lr_scale = Scale(direction_lr_frame, bg='White', bd=4, from_=-10, to=10, resolution=1, orient=HORIZONTAL,
         #                  sliderlength=30, length=400, width=30)
         # Make Labels
@@ -217,10 +245,13 @@ class GUI:
         #lr_label.grid(row=1, column=1, sticky="w")
         #lr_scale.grid(row=1, column=2, sticky="e")
 
-    def w_button_clicked(self):
+    def w_button_clicked(self, duration = 0.1, parallel = False, pos = Waist.Middle, pos_string = "Middle", edit = False, index = 0):
+        if(edit == True):
+            self.index = index
+        self.edit = edit
         self.initialize_popup()
         self.channel = 0
-        self.set_head_pos(Waist.Middle, "Middle")
+        self.set_head_pos(pos, pos_string)
         # Make frames
         direction_frame = Frame(self.popup, bg="white", width=GUI.POP_WIDTH, height=.25 * GUI.POP_WIDTH, pady=5, padx=3)
         direction_frame.grid(row=0, column=0, sticky="w")
