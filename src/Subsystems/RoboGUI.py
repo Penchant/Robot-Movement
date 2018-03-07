@@ -74,7 +74,7 @@ class GUI:
         SetPoint = namedtuple('SetPoint', ['channel', 'timeout', 'target', 'parallel', 'index'])
         temp = SetPoint(channel = self.channel, timeout = int(float(self.duration)*1000), target = self.target, parallel = self.parallel.get(), index = len(self.queuedCommands))
         if(self.edit == True):
-            self.queuedCommands[self.index] = temp
+            self.queuedCommands[self.index - 2] = temp
         else:
             self.queuedCommands.append(temp)
         self.add_to_queue()
@@ -87,29 +87,28 @@ class GUI:
             check = "P"
         if self.channel == 0:
             text = "Rotate Waist " + self.pos_string + ", D= " + str(self.duration)+ ", " + check
-            bcommand = lambda: w_button_clicked(self.duration, self.parallel.get(), self.pos, self.pos_string, True, index)
+            bcommand = lambda: self.w_button_clicked(self.duration, self.parallel.get(), self.pos, self.pos_string, True, index)
         elif self.channel == 1:
             text = "Move " + self.fb.get() + ", D= " + str(self.duration) + ", " + check
-            bcommand = lambda: f_button_clicked(self.duration, self.parallel.get(), self.fb.get(), self.speed, True, index)
+            bcommand = lambda: self.f_button_clicked(self.duration, self.parallel.get(), self.fb.get(), self.speed, True, index)
         elif self.channel == 2:
             text = "Rotate " + self.fb.get() + ", D= " + str(self.duration) +", " + str(self.target) + check
-            bcommand = lambda: l_button_clicked(self.duration, self.parallel.get(), self.fb.get(), self.speed, True, index)
+            bcommand = lambda: self.l_button_clicked(self.duration, self.parallel.get(), self.fb.get(), self.speed, True, index)
         elif self.channel == 3:
-            text = "Rotate Head " + str(self.head_scale.get()) + ", D= " + str(self.duration) + ", " + 
-            bcommand = lambda: h_button_clicked(self.duration, self.parallel.get(), self.fb.get(), self.target, True, index)
+            text = "Rotate Head " + str(self.head_scale.get()) + ", D= " + str(self.duration) + ", " + check 
+            bcommand = lambda: self.h_button_clicked(self.duration, self.parallel.get(), self.fb.get(), self.target, True, index)
         else:
             text = "Move Head " + str(self.head_scale.get()) + ", D= " + str(self.duration) + ", " + check
-            bcommand = lambda: h_button_clicked(self.duration, self.parallel.get(), self.fb.get(), self.target, True, index)
-        if(self.edit)
-        self.queue_button = Button(self.queue_frame, bg="white", text= text, font = 'Helvetica 12')
+            bcommand = lambda: self.h_button_clicked(self.duration, self.parallel.get(), self.fb.get(), self.target, True, index)
+        self.queue_button = Button(self.queue_frame, bg="white", text= text, font = 'Helvetica 12', command = bcommand)
         if(self.edit == True):
             for button in self.queue_frame.grid_slaves():
-                if int(button.grid_info()["row"]) = self.index:
+                if int(button.grid_info()["row"]) == self.index:
                     button.grid_forget()
-            self.queue_button.grid(row = self.index, sticky = "nw", command = bcommand)
+            self.queue_button.grid(row = self.index, sticky = "nw" )
             pass
         else:
-            self.queue_button.grid(row = self.row_counter, sticky = "nw", command = bcommand)
+            self.queue_button.grid(row = self.row_counter, sticky = "nw")
             self.row_counter +=1
         self.total_duration = self.total_duration+float(self.duration)
         print(str(self.total_duration))
@@ -144,7 +143,7 @@ class GUI:
         duration_frame.grid(row=1, column=0, sticky="w")
         # make spinbox
         self.duration_spinbox = Spinbox(duration_frame, bg='White', from_=0.1, to=10.0, width=20, format='%2.1f',
-                                   increment='0.1', font='Helvetica 36', textvariable=)
+                                        increment='0.1', font='Helvetica 36', textvariable=duration)
         duration_label = Label(duration_frame, bg="white", text="Enter duration in seconds:")
         duration_label.grid(row=0, sticky='w')
         self.duration_spinbox.grid(row=1, sticky='w')
@@ -160,7 +159,7 @@ class GUI:
 
         button_frame.grid(row=4, column=0, sticky="w")
         add_button = Button(button_frame, width=15, height=1, text="Add", bg="white", fg="Black",
-                        command=lambda: self.add_command(edit))
+                        command=lambda: self.add_command())
         cancel_button = Button(button_frame, width=15, height=1, text="Cancel", bg="white", fg="Black",
                         command=self.cancel)
         add_button.grid(row=0, column=3, sticky='w')
