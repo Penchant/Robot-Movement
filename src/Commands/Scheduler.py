@@ -34,18 +34,17 @@ class Scheduler:
                 self.current_command_thread = threading.Thread(None, self.current_command.run)
                 self.current_command_thread.start()
             except Empty:
-            	self.guiQueue = []
+                self.guiQueue = []
             self.commandNum +=1
 
     def loop(self):
     	self.running = True
         self.commandNum = 0
         while (self.enable):
-            if not (len(self.guiQueue) == 0):
-                if(self.new == True):
-                    self.createCommands()
+            if not (self.schedule.empty() == True):
                 self.execute()
             time.sleep(.01)
+        print("Escaped while loop")
         complete = self.current_command._isFinished()
        	self.running = False
         if ((self.current_command != None) and (complete == False)):

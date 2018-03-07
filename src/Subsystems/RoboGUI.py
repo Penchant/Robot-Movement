@@ -74,7 +74,7 @@ class GUI:
         SetPoint = namedtuple('SetPoint', ['channel', 'timeout', 'target', 'parallel', 'index'])
         temp = SetPoint(channel = self.channel, timeout = int(float(self.duration)*1000), target = self.target, parallel = self.parallel.get(), index = len(self.queuedCommands))
         if(self.edit == True):
-            self.queuedCommands[self.index - 2] = temp
+            self.queuedCommands[self.index - 3] = temp
         else:
             self.queuedCommands.append(temp)
         self.add_to_queue()
@@ -87,7 +87,7 @@ class GUI:
             check = "P"
         if self.channel == 0:
             text = "Rotate Waist " + self.pos_string + ", D= " + str(self.duration)+ ", " + check
-            bcommand = lambda: self.w_button_clicked(self.duration, self.parallel.get(), self.pos, self.pos_string, True, index)
+            bcommand = lambda: self.w_button_clicked(self.duration, self.parallel.get(), self.target, self.pos_string, True, index)
         elif self.channel == 1:
             text = "Move " + self.fb.get() + ", D= " + str(self.duration) + ", " + check
             bcommand = lambda: self.f_button_clicked(self.duration, self.parallel.get(), self.fb.get(), self.speed, True, index)
@@ -341,15 +341,18 @@ class GUI:
         self.gifDisplay = False
         
     def go_button_clicked(self):
-        self.scheduler.new = True
+        #print(self.queuedCommands)
         self.scheduler.guiQueue = self.queuedCommands
+        self.scheduler.createCommands()
+        print(self.scheduler.guiQueue)
+        self.scheduler.new = True
         #schedulerThread =threading.Thread(None, self.scheduler.run)
         #gifthread =threading.Thread(None, lambda: self.display_gif("tenor.gif", 4))
         gifthread =threading.Thread(None, lambda: self.run_animation())
         gifthread.start()
         #schedulerThread.start()
         print("The milk done poured")
-
+        print(self.scheduler.guiQueue)
     def main(self):
         # create main window
         self.window.title("ROBO_GUI")
