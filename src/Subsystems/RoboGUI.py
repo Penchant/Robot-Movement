@@ -12,12 +12,12 @@ class GifFrame(object):
         self.frameCount = 0
         self._window = Toplevel()
         self._window.attributes("-fullscreen", True)
-        #self._window.configure(background = "black")
+        self._window.configure(background = "black")
         self.imageGIF2 = PhotoImage(file="tenor.gif", format="gif -index " + str(self.frameCount))
-        #self._window.grid_rowconfigure(1, weight=1)
-        #self._window.grid_columnconfigure(1, weight = 1)
+        self._window.grid_rowconfigure(1, weight=1)
+        self._window.grid_columnconfigure(1, weight = 1)
         self.imageLabel2 = Label(self._window, image=self.imageGIF2)
-        self.imageLabel2.grid(column=0,row=0)
+        self.imageLabel2.grid(column=1,row=1)
         
         
 
@@ -54,7 +54,7 @@ class GUI:
         self.scheduler = scheduler
         self.queuedCommands = []
         self.target = 0
-        self.row_counter = 1
+        self.row_counter = 2
         self.total_duration = 0
 
     def set_speed(self, speed):
@@ -98,9 +98,9 @@ class GUI:
         print(str(self.total_duration))
     def clear_queue(self):
         for button in self.queue_frame.grid_slaves():
-            if int(button.grid_info()["row"]) > 0:
+            if int(button.grid_info()["row"]) > 1:
                 button.grid_forget()
-        self.row_counter = 1
+        self.row_counter = 2
         self.queuedCommands = []
     def cancel(self):
         self.popup.destroy()
@@ -256,7 +256,7 @@ class GUI:
     def run_animation(self):
         self.gifDisplay = True
         print("Gif displaying")
-        duration = 5
+        duration = self.total_duration
         print("Duration")
         sm = GifFrame()
         print("Frame made")
@@ -331,17 +331,19 @@ class GUI:
                                  padx=0)
         bot_button_frame = Frame(self.window, bg="black", width=.75 * GUI.WIDTH, height=.50 * GUI.HEIGHT, pady=0,
                                  padx=0)
-        self.queue_frame = Frame(self.window, bg="white", width=.25 * GUI.WIDTH, height=.50 * GUI.HEIGHT, pady=0, padx=0)
+        self.queue_frame = Frame(self.window, bg="white", width=.25 * GUI.WIDTH, height=.75 * GUI.HEIGHT, pady=0, padx=0)
         start_frame = Frame(self.window, bg="black", width=.25 * GUI.WIDTH, height=.25 * GUI.HEIGHT, pady=0, padx=0)
 
         # Main container layout
-        self.window.grid_rowconfigure(0, weight=0)
-        self.window.grid_columnconfigure(1, weight=0)
+        self.window.grid_rowconfigure(0, weight=1)
+        self.window.grid_rowconfigure(1, weight=1)
+        self.window.grid_columnconfigure(0, weight=1)
+        self.window.grid_columnconfigure(1, weight = 1)
 
         top_button_frame.grid(row=0, column=0)
-        bot_button_frame.grid(row=2, column = 0)
-        self.queue_frame.grid(row=0, column=1, sticky = "nw")
-        start_frame.grid(row=2, column=1)
+        bot_button_frame.grid(row=1, column = 0)
+        self.queue_frame.grid(row=0, rowspan = 2, column=1, sticky = "nw")
+       # start_frame.grid(row=2, column=1)
 
         # Make buttons
         fb_button = Button(top_button_frame, width=30, height=15, text="FORWARD/BACKWARD", bg="cyan2", fg="Black",
@@ -352,7 +354,7 @@ class GUI:
                           command=self.h_button_clicked)
         w_button = Button(bot_button_frame, width=30, height=15, text="WAIST SWIVEL", bg="cyan2", fg="Black",
                           command=self.w_button_clicked)
-        go_button = Button(start_frame, width=30, height=5, text="Go!", bg="green2", fg="Black",
+        go_button = Button(self.queue_frame, width=30, height=5, text="Go!", bg="green2", fg="Black",
                            command=self.go_button_clicked)
         clear_button =Button(self.queue_frame, width=30, height = 2, text = "Clear Queue", bg = "red2", command = self.clear_queue)
 
@@ -365,7 +367,8 @@ class GUI:
         lr_button.grid(row=0, column=1, sticky="nsew")
         h_button.grid(row=0, column=0, sticky="se")
         w_button.grid(row=0, column=1, sticky="SE")
-        clear_button.grid(row = 0, column = 0, sticky = "nw")
+        go_button.grid(row=0, column = 0, sticky = "nw")
+        clear_button.grid(row = 1, column = 0, sticky = "nw")
         go_button.grid(sticky="sw")
 
         self.window.mainloop()
