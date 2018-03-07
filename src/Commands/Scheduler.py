@@ -4,7 +4,7 @@ import threading
 from collections import deque
 from SetSpeed import SetSpeed
 from SetPosition import SetPosition
-
+import time
 
 class Scheduler:
     def __init__(self):
@@ -28,19 +28,24 @@ class Scheduler:
         if (
                 self.current_command == None or self.current_command._isFinished() or self.current_command.parallel == True):
             try:
+                self.new = False
                 self.current_command = self.schedule.get(True, None)
                 print("Executing command " + str(self.commandNum))
                 self.current_command_thread = threading.Thread(None, self.current_command.run)
                 self.current_command_thread.start()
             except Empty:
-            	self.enable = False
+            	self.guiQueue = []
             self.commandNum +=1
 
     def loop(self):
     	self.running = True
         self.commandNum = 0
         while (self.enable):
-            self.execute()
+            if not (len(self.guiQueue) == 0):
+                if(self.new == True):
+                    self.createCommands()
+                self.execute()
+            time.sleep(.01)
         complete = self.current_command._isFinished()
        	self.running = False
         if ((self.current_command != None) and (complete == False)):
@@ -66,7 +71,7 @@ class Scheduler:
 
     def run(self):
         self.enable = True
-        self.createCommands()
+        #self.createCommands()
         self.thread = threading.Thread(None, self.loop)
         self.thread.start()
 

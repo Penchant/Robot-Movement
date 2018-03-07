@@ -51,7 +51,7 @@ class Robot:
 		#self.scheduler.addSequentialCommand(TestCommand(5000))
 		#self.scheduler.addSequentialCommand(SetSpeed(1,1000, 6000))
 		#self.scheduler.addSequentialCommand(SetSpeed(2, 1000, 6000))
-		#self.scheduler.run()
+		self.scheduler.run()
 		self.oi.run()
                 
 		#self.drivetrain.thread.join()

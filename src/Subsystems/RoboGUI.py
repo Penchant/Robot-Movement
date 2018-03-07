@@ -12,10 +12,14 @@ class GifFrame(object):
         self.frameCount = 0
         self._window = Toplevel()
         self._window.attributes("-fullscreen", True)
+        #self._window.configure(background = "black")
         self.imageGIF2 = PhotoImage(file="tenor.gif", format="gif -index " + str(self.frameCount))
+        #self._window.grid_rowconfigure(1, weight=1)
+        #self._window.grid_columnconfigure(1, weight = 1)
         self.imageLabel2 = Label(self._window, image=self.imageGIF2)
-        self.imageLabel2.pack()
-        self.imageLabel2.place(x=GUI.WIDTH / 2, y=GUI.HEIGHT / 2, anchor=CENTER)
+        self.imageLabel2.grid(column=0,row=0)
+        
+        
 
     def update(self):
         try:
@@ -51,6 +55,7 @@ class GUI:
         self.queuedCommands = []
         self.target = 0
         self.row_counter = 1
+        self.total_duration = 0
 
     def set_speed(self, speed):
         self.target = speed
@@ -89,7 +94,8 @@ class GUI:
         self.queue_button = Button(self.queue_frame, bg="white", text= text, font = 'Helvetica 12')
         self.queue_button.grid(row = self.row_counter, sticky = "nw")
         self.row_counter +=1
-
+        self.total_duration = self.total_duration+float(self.duration)
+        print(str(self.total_duration))
     def clear_queue(self):
         for button in self.queue_frame.grid_slaves():
             if int(button.grid_info()["row"]) > 0:
@@ -248,17 +254,17 @@ class GUI:
 
 
     def run_animation(self):
-        print("Running animation")
         self.gifDisplay = True
+        print("Gif displaying")
         duration = 5
-        print("Duration set")
+        print("Duration")
         sm = GifFrame()
-        print("GifFrame constructed")
+        print("Frame made")
         drawThread = threading.Thread(None,lambda: self.draw_animation(sm, 100))
-        print("Thread made")
         drawThread.start()
         print("Thread started")
         time.sleep(duration)
+        print("Wait over")
         self.gifDisplay = False
         time.sleep(.1)
         print("Sleeping over")
@@ -305,12 +311,13 @@ class GUI:
         self.gifDisplay = False
         
     def go_button_clicked(self):
+        self.scheduler.new = True
         self.scheduler.guiQueue = self.queuedCommands
-        schedulerThread =threading.Thread(None, self.scheduler.run)
+        #schedulerThread =threading.Thread(None, self.scheduler.run)
         #gifthread =threading.Thread(None, lambda: self.display_gif("tenor.gif", 4))
         gifthread =threading.Thread(None, lambda: self.run_animation())
         gifthread.start()
-        schedulerThread.start()
+        #schedulerThread.start()
         print("The milk done poured")
 
     def main(self):
@@ -337,17 +344,17 @@ class GUI:
         start_frame.grid(row=2, column=1)
 
         # Make buttons
-        fb_button = Button(top_button_frame, width=30, height=13, text="FORWARD/BACKWARD", bg="white", fg="Black",
+        fb_button = Button(top_button_frame, width=30, height=15, text="FORWARD/BACKWARD", bg="cyan2", fg="Black",
                           command=self.f_button_clicked)
-        lr_button = Button(top_button_frame, width=30, height=13, text="ROTATE", bg="white", fg="Black",
+        lr_button = Button(top_button_frame, width=30, height=15, text="ROTATE", bg="cyan2", fg="Black",
                           command=self.l_button_clicked)
-        h_button = Button(bot_button_frame, width=30, height=13, text="HEAD SWIVEL", bg="white", fg="Black",
+        h_button = Button(bot_button_frame, width=30, height=15, text="HEAD SWIVEL", bg="cyan2", fg="Black",
                           command=self.h_button_clicked)
-        w_button = Button(bot_button_frame, width=30, height=13, text="WAIST SWIVEL", bg="white", fg="Black",
+        w_button = Button(bot_button_frame, width=30, height=15, text="WAIST SWIVEL", bg="cyan2", fg="Black",
                           command=self.w_button_clicked)
         go_button = Button(start_frame, width=30, height=5, text="Go!", bg="green2", fg="Black",
                            command=self.go_button_clicked)
-        clear_button =Button(self.queue_frame, width=30, height = 2, text = "Clear Queue", bg = "White", command = self.clear_queue)
+        clear_button =Button(self.queue_frame, width=30, height = 2, text = "Clear Queue", bg = "red2", command = self.clear_queue)
 
 
         #Make Labels
@@ -359,7 +366,7 @@ class GUI:
         h_button.grid(row=0, column=0, sticky="se")
         w_button.grid(row=0, column=1, sticky="SE")
         clear_button.grid(row = 0, column = 0, sticky = "nw")
-        go_button.grid(sticky="snew")
+        go_button.grid(sticky="sw")
 
         self.window.mainloop()
 
