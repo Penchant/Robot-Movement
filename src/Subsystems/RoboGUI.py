@@ -63,8 +63,8 @@ class GUI:
         elif self.channel == 2:
             self.target = self.target + 6000 if self.fb.get() == 'Left' else 6000 - self.target
         elif self.channel == 3:
-            self.channel = 4 if self.fb.get() == 'Horizontal' else 3
-            self.target = self.head_scale.get() * 3000 / self.head_scale['to'] + 6000
+            self.channel = 3 if self.fb.get() == 'Horizontal' else 4
+            self.target = int(self.head_scale.get() * 3000 / self.head_scale['to']) + 6000
 
         SetPoint = namedtuple('SetPoint', ['channel', 'timeout', 'target', 'parallel', 'index'])
         temp = SetPoint(channel = self.channel, timeout = int(float(self.duration)*1000), target = self.target, parallel = self.parallel.get(), index = len(self.queuedCommands))
@@ -95,7 +95,7 @@ class GUI:
             if int(button.grid_info()["row"]) > 0:
                 button.grid_forget()
         self.row_counter = 1
-
+        self.queuedCommands = []
     def cancel(self):
         self.popup.destroy()
 
@@ -243,16 +243,27 @@ class GUI:
 
     def draw_animation(self, sm, delay):
         sm.update()
-        sm.win().after(delay, self.draw_animation, sm, delay)
+        if self.gifDisplay == True:
+            sm.win().after(delay, self.draw_animation, sm, delay)
 
 
     def run_animation(self):
+        print("Running animation")
+        self.gifDisplay = True
         duration = 5
+        print("Duration set")
         sm = GifFrame()
+        print("GifFrame constructed")
         drawThread = threading.Thread(None,lambda: self.draw_animation(sm, 100))
+        print("Thread made")
         drawThread.start()
+        print("Thread started")
         time.sleep(duration)
+        self.gifDisplay = False
+        time.sleep(.1)
+        print("Sleeping over")
         sm.destroy()
+        
 
     def display_gif(self, gifName, totalFrames):
         self.gifDisplay = True

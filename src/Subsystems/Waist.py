@@ -5,13 +5,13 @@ import time
 
 class Waist:
 
-	FarLeft = 4000
+	FarLeft = 4500
 	left = 5000
 	MidLeft = 5000
 	center = 6000
 	Middle = 6000
 	MidRight = 7500
-	FarRight = 9000
+	FarRight = 8300
 	right = 7500
 
 	def __init__(self, channel, controller):

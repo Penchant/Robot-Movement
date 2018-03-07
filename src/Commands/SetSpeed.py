@@ -9,8 +9,8 @@ class SetSpeed(TimedCommand):
                 self.speed = speed
                 self.controller.setTarget(1, 6000)
                 self.controller.setTarget(2, 6000)
-                self.parallel = parallel
                 super(SetSpeed, self).__init__(timeout)
+                self.parallel = parallel
                 return
                 
         def _execute(self):

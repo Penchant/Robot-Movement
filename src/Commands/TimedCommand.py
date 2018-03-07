@@ -6,7 +6,8 @@ class TimedCommand(Command):
 	def __init__(self, timeout):
                 self.startTime = -1
 		self.time = timeout
-	def _initialization(self):
+                self.parallel = False
+        def _initialization(self):
                 self.startTime = int(round(time.time() * 1000))
         def _isFinished(self):
                 if self.startTime == -1:
