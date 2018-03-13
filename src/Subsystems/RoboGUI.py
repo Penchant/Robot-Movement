@@ -110,8 +110,8 @@ class GUI:
         else:
             self.queue_button.grid(row = self.row_counter, sticky = "nw")
             self.row_counter +=1
-        self.total_duration = self.total_duration+float(self.duration)
-        print(str(self.total_duration))
+        #self.total_duration = self.total_duration+float(self.duration)
+        #print(str(self.total_duration))
     def clear_queue(self):
         for button in self.queue_frame.grid_slaves():
             if int(button.grid_info()["row"]) > 1:
@@ -286,8 +286,11 @@ class GUI:
     def run_animation(self):
         self.gifDisplay = True
         print("Gif displaying")
-        duration = self.total_duration
-        print("Duration")
+        duration = 0
+        for command in self.queuedCommands:
+            duration += (command.timeout/ 1000)
+
+        print("Duration: " + str(duration))
         sm = GifFrame()
         print("Frame made")
         drawThread = threading.Thread(None,lambda: self.draw_animation(sm, 100))
