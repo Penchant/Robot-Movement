@@ -277,6 +277,22 @@ class GUI:
         mr_button.grid(row=1, column=4, sticky="senw")
         fr_button.grid(row=1, column=5, sticky="senw")
 
+    def speech_button_clicked(self)
+        speech_frame = Frame(self.popup, bg = "white", width = GUI.POP_WIDTH, height = 0.25*GUI.POP_WIDTH, pady = 5, padx = 3)
+        speech_frame.grid(row=0, column = 0, sticky = "w")
+
+        # make buttons
+        option1 = Button(speech_frame, width = GUI.POP_WIDTH, text = "Roger, Roger", bg = "white", fg = "black")
+        option2 = Button(speech_frame, width = GUI.POP_WIDTH, text = "No way hosay", bg = "white", fg = "black")
+        option3 = Button(speech_frame, width = GUI.POP_WIDTH, text = "Nothing to see here, move alone", bg = "white", fg = "black")
+        option4 = Button(speech_frame, width = GUI.POP_WIDTH, text = "Should I get rid of this meatbag for you?", bg = "white", fg = "black")
+        option5 = Button(speech_frame, width = GUI.POP_WIDTH, text = "I do believe they think I am some kind of God", bg = "white", fg = "black")
+        option6 = Button(speech_frame, width = GUI.POP_WIDTH, text = "My parts are showing? Oh my goodness", bg = "white", fg = "black")
+        
+        #make label
+        speech_label = Label(speed_frame, bg = "white", text = "choose text option.")
+        speech_label.g
+    
     def draw_animation(self, sm, delay):
         sm.update()
         if self.gifDisplay == True:
@@ -382,14 +398,15 @@ class GUI:
        # start_frame.grid(row=2, column=1)
 
         # Make buttons
-        fb_button = Button(top_button_frame, width=30, height=15, text="FORWARD/BACKWARD", bg="cyan2", fg="Black",
+        fb_button = Button(top_button_frame, width=31, height=15, text="FORWARD/BACKWARD", bg="cyan2", fg="Black",
                           command=self.f_button_clicked)
-        lr_button = Button(top_button_frame, width=30, height=15, text="ROTATE", bg="cyan2", fg="Black",
+        lr_button = Button(top_button_frame, width=31, height=15, text="ROTATE", bg="cyan2", fg="Black",
                           command=self.l_button_clicked)
-        h_button = Button(bot_button_frame, width=30, height=15, text="HEAD SWIVEL", bg="cyan2", fg="Black",
+        h_button = Button(bot_button_frame, width=20, height=15, text="HEAD SWIVEL", bg="cyan2", fg="Black",
                           command=self.h_button_clicked)
-        w_button = Button(bot_button_frame, width=30, height=15, text="WAIST SWIVEL", bg="cyan2", fg="Black",
+        w_button = Button(bot_button_frame, width=20, height=15, text="WAIST SWIVEL", bg="cyan2", fg="Black",
                           command=self.w_button_clicked)
+        speech_button = Button(bot_button_frame, width = 20, height = 15, text = "SPEECH OPTIONS", bg = "cyan2", fg = "Black")
         go_button = Button(self.queue_frame, width=30, height=5, text="Go!", bg="green2", fg="Black",
                            command=self.go_button_clicked)
         clear_button =Button(self.queue_frame, width=30, height = 2, text = "Clear Queue", bg = "red2", command = self.clear_queue)
@@ -403,6 +420,7 @@ class GUI:
         lr_button.grid(row=0, column=1, sticky="nsew")
         h_button.grid(row=0, column=0, sticky="se")
         w_button.grid(row=0, column=1, sticky="SE")
+        speech_button.grid(row=0, column=2, sticky="SE")
         go_button.grid(row=0, column = 0, sticky = "nw")
         clear_button.grid(row = 1, column = 0, sticky = "nw")
         go_button.grid(sticky="sw")

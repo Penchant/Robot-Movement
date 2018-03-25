@@ -1,0 +1,13 @@
+import socket
+
+s = socket.socket()
+host = raw_input('Enter the hostname:')
+port = int(raw_input('Enter the port number: '))
+
+s.connect((host, port))
+input = ""
+while input != "quit":
+    input = raw_input('Enter text to send')
+    s.send(input + \n)
+print('Closing')
+s.close()
