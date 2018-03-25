@@ -277,22 +277,38 @@ class GUI:
         mr_button.grid(row=1, column=4, sticky="senw")
         fr_button.grid(row=1, column=5, sticky="senw")
 
-    def speech_button_clicked(self)
+    def speech_button_clicked(self):
+        self.popup = Toplevel(self.window)
+        self.popup.configure(background="white")
+        
         speech_frame = Frame(self.popup, bg = "white", width = GUI.POP_WIDTH, height = 0.25*GUI.POP_WIDTH, pady = 5, padx = 3)
         speech_frame.grid(row=0, column = 0, sticky = "w")
 
         # make buttons
-        option1 = Button(speech_frame, width = GUI.POP_WIDTH, text = "Roger, Roger", bg = "white", fg = "black")
-        option2 = Button(speech_frame, width = GUI.POP_WIDTH, text = "No way hosay", bg = "white", fg = "black")
-        option3 = Button(speech_frame, width = GUI.POP_WIDTH, text = "Nothing to see here, move alone", bg = "white", fg = "black")
-        option4 = Button(speech_frame, width = GUI.POP_WIDTH, text = "Should I get rid of this meatbag for you?", bg = "white", fg = "black")
-        option5 = Button(speech_frame, width = GUI.POP_WIDTH, text = "I do believe they think I am some kind of God", bg = "white", fg = "black")
-        option6 = Button(speech_frame, width = GUI.POP_WIDTH, text = "My parts are showing? Oh my goodness", bg = "white", fg = "black")
+        option1 = Button(speech_frame, width = 40, text = "Roger, Roger", bg = "white", fg = "black", font='Helvetica 24', command = self.set_speech("Roger, roger"))
+        option2 = Button(speech_frame, width = 40, text = "I find your lack of faith disturbing", bg = "white", fg = "black", font = 'Helvetica 24', command = self.set_speech("I find your lack of faith disturbing"))
+        option3 = Button(speech_frame, width = 40, text = "Nothing to see here, move along", bg = "white", fg = "black", font = 'Helvetica 24', command = self.set_speech("Nothing to see here, move along"))
+        option4 = Button(speech_frame, width = 40, text = "Should I get rid of this meatbag for you?", bg = "white", fg = "black", font = 'Helvetica 24', command = self.set_speech("Should I get rid of this meatbag for you?"))
+        option5 = Button(speech_frame, width = 40, text = "I do believe they think I am some kind of God", bg = "white", fg = "black", font = 'Helvetica 24', command = self.set_speech("I do believe they think I am some kind of deity"))
+        option6 = Button(speech_frame, width = 40, text = "My parts are showing? Oh my goodness", bg = "white", fg = "black", font = 'Helvtica 24', command = self.set_speech("My parts are showing? Oh my goodness"))
+        add_button = Button(speech_frame, width = 19, height=1, text = "add", bg = "white", fg = "Black", font = 'Helvetica 18', command = lambda: self.add_command())
+        cancel_button = Button(speech_frame, width = 19, height = 1, text = "cancel", bg = "white", fg = "black", font = 'Helvetica 18', command = self.cancel)
         
         #make label
-        speech_label = Label(speed_frame, bg = "white", text = "choose text option.")
-        speech_label.g
-    
+        speech_label = Label(speech_frame, bg = "white", text = "Choose text option:", font = 'Helvetica 16')
+        speech_label.grid(row = 0, column = 0, sticky = "W")
+        option1.grid(row = 1, columnspan = 2, column = 0, sticky = "N")
+        option2.grid(row = 2, columnspan = 2, column = 0, sticky = "N")
+        option3.grid(row = 3, columnspan = 2, column = 0, sticky = "N")
+        option4.grid(row = 4, columnspan = 2, column = 0, sticky = "N")
+        option5.grid(row = 5, columnspan = 2, column = 0, sticky = "N")
+        option6.grid(row = 6, columnspan = 2, column = 0, sticky = "N")
+        add_button.grid(row = 7, column = 0, sticky = "N")
+        cancel_button.grid(row = 7, column = 1, sticky = "N")
+                     
+    def set_speech(self, text):
+        self.text = str(text)
+        
     def draw_animation(self, sm, delay):
         sm.update()
         if self.gifDisplay == True:
@@ -406,7 +422,7 @@ class GUI:
                           command=self.h_button_clicked)
         w_button = Button(bot_button_frame, width=20, height=15, text="WAIST SWIVEL", bg="cyan2", fg="Black",
                           command=self.w_button_clicked)
-        speech_button = Button(bot_button_frame, width = 20, height = 15, text = "SPEECH OPTIONS", bg = "cyan2", fg = "Black")
+        speech_button = Button(bot_button_frame, width = 20, height = 15, text = "SPEECH OPTIONS", bg = "cyan2", fg = "Black", command = self.speech_button_clicked)
         go_button = Button(self.queue_frame, width=30, height=5, text="Go!", bg="green2", fg="Black",
                            command=self.go_button_clicked)
         clear_button =Button(self.queue_frame, width=30, height = 2, text = "Clear Queue", bg = "red2", command = self.clear_queue)
