@@ -28,10 +28,10 @@ class Waist:
 		while(self.enable):
 			self._execute()
 			time.sleep(.02)
-        def run(self):
-                self.enable = True
-                self.thread = threading.Thread(None, self.loop)
-                self.thread.start()
+	def run(self):
+		self.enable = True
+		self.thread = threading.Thread(None, self.loop)
+		self.thread.start()
 	def disable(self):
 		self.enable = False
 		self.controller.setSpeed(self.channel, 0)

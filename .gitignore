@@ -1,5 +1,8 @@
+*/*.pyc
 *.pyc
 *#
-
+*.cpython*
 /dist/
 /*.egg-info
+*/__*/
+/src/__*/

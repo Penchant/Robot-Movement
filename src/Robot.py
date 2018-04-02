@@ -32,7 +32,8 @@ class Robot:
 		self.waist = Waist(RobotMap.waistChannel, RobotMap.controller)
 
 		#host = raw_input('Enter the hostname:')
-		host = '192.168.42.129'
+		#host = '192.168.42.129'
+		host = '100.116.13.77'
 		#host = '10.152.227.236'
 		#host = '100.82.220.120'
 		#port = int(raw_input('Enter the port number: '))
@@ -89,8 +90,8 @@ def main():
 
 	# Create thread eventually that can then be killed 
 	robot.Teleop()
-        #robot.oi.disable()
-        print("Program is done")
+	#robot.oi.disable()
+	print("Program is done")
         
 if __name__ == "__main__" :
 	main()

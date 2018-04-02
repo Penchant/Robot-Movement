@@ -1,4 +1,6 @@
-from tkinter import *
+#import Tkinter
+from Tkinter import *
+# from tkinter import *
 from collections import namedtuple
 #from Scheduler import Scheduler
 from Drivetrain import Drivetrain

@@ -1,10 +1,11 @@
+import socket
 
 class Network:
 	def __init__(self, hostname, port, robot):
 		self.socket = socket.socket()
 		self.hostname = hostname
 		self.port = port
-		self.socket.connect((host, port))
+		self.socket.connect((hostname, port))
 		self.send = ""
 		self.enable = False
 		self.receive = ""

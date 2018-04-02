@@ -9,6 +9,9 @@ from Subsystems.Head import Head
 import os
 import Tkinter
 from Tkinter import *
+# import tkinter
+# from tkinter import *
+
 import time
 
 from Subsystems.Drivetrain import Drivetrain
@@ -24,9 +27,9 @@ class OI:
 		frame.bind("<KeyPress>", self.keydown)
 		frame.bind("<KeyRelease>", self.keyup)
 		frame.focus_set()
-                #frame.pack()
-                self.tk.protocol("WM_DELETE_WINDOW", self.disable)
-                self.speed = Drivetrain.Slow
+		#frame.pack()
+		self.tk.protocol("WM_DELETE_WINDOW", self.disable)
+		self.speed = Drivetrain.Slow
 		self.gui = GUI(self.tk, self.robot.scheduler, self.robot)
                 
 	def run(self):
@@ -75,10 +78,10 @@ class OI:
                         RobotMap.controller.setTarget(1, 6000 + self.speed)
                         self.robot.drivetrain.moveBackward = True
 		elif('a' == event.char):
-                        RobotMap.controller.setTarget(2, 6000 + 200 + self.speed)
+			RobotMap.controller.setTarget(2, 6000 + 200 + self.speed)
 			self.robot.drivetrain.rotateLeft = True
 		elif('d' == event.char):
-                        RobotMap.controller.setTarget(2, 6000 - 200 - self.speed)
+			RobotMap.controller.setTarget(2, 6000 - 200 - self.speed)
 			self.robot.drivetrain.rotateRight = True
 		elif('i' == event.char):
 			self.speed = Drivetrain.Fast
@@ -86,13 +89,13 @@ class OI:
 			self.speed = Drivetrain.Medium
 		elif('m' == event.char):
 			self.speed = Drivetrain.Slow
-                elif('\r' == event.char):
-                        print("Sending stop signal to drivetrain")
-                        RobotMap.controller.setTarget(1, 6000)
-                        RobotMap.controller.setTarget(2, 6000)
-                        self.robot.drivetrain.stop = not self.robot.drivetrain.stop
+		elif('\r' == event.char):
+			 	print("Sending stop signal to drivetrain")
+			 	RobotMap.controller.setTarget(1, 6000)
+			 	RobotMap.controller.setTarget(2, 6000)
+			 	self.robot.drivetrain.stop = not self.robot.drivetrain.stop
 		else:
-                        print(event.char)
+			print(event.char)
 			pass
 			
 	def keyup(self,event):
