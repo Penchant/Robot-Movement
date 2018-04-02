@@ -27,7 +27,7 @@ class OI:
                 #frame.pack()
                 self.tk.protocol("WM_DELETE_WINDOW", self.disable)
                 self.speed = Drivetrain.Slow
-		self.gui = GUI(self.tk, self.robot.scheduler)
+		self.gui = GUI(self.tk, self.robot.scheduler, self.robot)
                 
 	def run(self):
 		self.gui.main()

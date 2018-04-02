@@ -10,6 +10,7 @@ from OI import OI
 from Subsystems.Drivetrain import Drivetrain
 from Subsystems.Head import Head 
 from Subsystems.Waist import Waist
+from Subsystems.Network import Network
 from Commands.Scheduler import Scheduler
 from Commands.TestCommand import TestCommand
 from Commands.SetSpeed import SetSpeed
@@ -29,12 +30,21 @@ class Robot:
 		self.head = Head(
 			RobotMap.headHorizontalChannel, RobotMap.headVerticalChannel, RobotMap.controller)
 		self.waist = Waist(RobotMap.waistChannel, RobotMap.controller)
-		
+
+		#host = raw_input('Enter the hostname:')
+		host = '192.168.42.129'
+		#host = '10.152.227.236'
+		#host = '100.82.220.120'
+		#port = int(raw_input('Enter the port number: '))
+		port = 6000		
+
+		self.network = Network(host, port)
 		self.oi = OI(self)
 
 		self.subsystems.append(self.drivetrain)
 		self.subsystems.append(self.head)
 		self.subsystems.append(self.waist)
+		self.subsystems.append(self.network)
 
 		self.robotInit = True
 
@@ -52,6 +62,7 @@ class Robot:
 		#self.scheduler.addSequentialCommand(SetSpeed(1,1000, 6000))
 		#self.scheduler.addSequentialCommand(SetSpeed(2, 1000, 6000))
 		self.scheduler.run()
+		self.network.run()
 		self.oi.run()
                 
 		#self.drivetrain.thread.join()

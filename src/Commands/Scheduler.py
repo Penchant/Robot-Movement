@@ -4,6 +4,7 @@ import threading
 from collections import deque
 from SetSpeed import SetSpeed
 from SetPosition import SetPosition
+from TextToSpeechCommmand import TextToSpeechCommmand
 import time
 
 class Scheduler:

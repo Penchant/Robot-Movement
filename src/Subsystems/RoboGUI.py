@@ -43,7 +43,7 @@ class GUI:
     POP_WIDTH = 500
     POP_HEIGHT = 300
 
-    def __init__(self, tkinter_ref = None, scheduler = None):
+    def __init__(self, tkinter_ref = None, scheduler = None, robot = None):
         if tkinter_ref == None:
             tkinter_ref = Tk()
         self.speed = "slow"
@@ -56,6 +56,7 @@ class GUI:
         self.target = 0
         self.row_counter = 2
         self.total_duration = 0
+        self.robot = robot
 
     def set_speed(self, speed):
         self.speed = speed
@@ -79,6 +80,9 @@ class GUI:
             self.queuedCommands.append(temp)
         self.add_to_queue()
         self.popup.destroy()
+
+    def tts_add_command(self):
+        
 
     def add_to_queue(self):
         check = ""
