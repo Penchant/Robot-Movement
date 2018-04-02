@@ -82,14 +82,27 @@ class GUI:
         self.popup.destroy()
 
     def tts_add_command(self):
+        TTS = namedtuple('TTS', ['text', 'robot'])
+        temp = TTS(self.text, self.robot)
+        if(self.edit == True):
+            self.queuedCommands[self.index - 3] = temp
+        else:
+            self.queuedCommands.append(temp)
+        self.add_to_queue(True)
+        self.popup.destroy()
+
         
 
-    def add_to_queue(self):
+    def add_to_queue(self, tts = False):
+        
         check = ""
         index = self.row_counter
         if(self.parallel==True):
             check = "P"
-        if self.channel == 0:
+        if tts == True:
+            text = "Text To Speech"
+            bcommand = lambda: self.speech_button_clicked(True, index)
+        elif self.channel == 0:
             text = "Rotate Waist " + self.pos_string + ", D= " + str(self.duration)+ ", " + check
             bcommand = lambda: self.w_button_clicked(self.duration, self.parallel.get(), self.target, self.pos_string, True, index)
         elif self.channel == 1:
@@ -122,6 +135,7 @@ class GUI:
                 button.grid_forget()
         self.row_counter = 2
         self.queuedCommands = []
+
     def cancel(self):
         self.popup.destroy()
 
@@ -281,9 +295,13 @@ class GUI:
         mr_button.grid(row=1, column=4, sticky="senw")
         fr_button.grid(row=1, column=5, sticky="senw")
 
-    def speech_button_clicked(self):
+    def speech_button_clicked(self, edit = False, index = 0):
         self.popup = Toplevel(self.window)
         self.popup.configure(background="white")
+        if(edit == True):
+            self.index = index
+        self.edit = edit
+
         
         speech_frame = Frame(self.popup, bg = "white", width = GUI.POP_WIDTH, height = 0.25*GUI.POP_WIDTH, pady = 5, padx = 3)
         speech_frame.grid(row=0, column = 0, sticky = "w")
@@ -295,7 +313,7 @@ class GUI:
         option4 = Button(speech_frame, width = 40, text = "Should I get rid of this meatbag for you?", bg = "white", fg = "black", font = 'Helvetica 24', command = self.set_speech("Should I get rid of this meatbag for you?"))
         option5 = Button(speech_frame, width = 40, text = "I do believe they think I am some kind of God", bg = "white", fg = "black", font = 'Helvetica 24', command = self.set_speech("I do believe they think I am some kind of deity"))
         option6 = Button(speech_frame, width = 40, text = "My parts are showing? Oh my goodness", bg = "white", fg = "black", font = 'Helvtica 24', command = self.set_speech("My parts are showing? Oh my goodness"))
-        add_button = Button(speech_frame, width = 19, height=1, text = "add", bg = "white", fg = "Black", font = 'Helvetica 18', command = lambda: self.add_command())
+        add_button = Button(speech_frame, width = 19, height=1, text = "add", bg = "white", fg = "Black", font = 'Helvetica 18', command = lambda: self.tts_add_command())
         cancel_button = Button(speech_frame, width = 19, height = 1, text = "cancel", bg = "white", fg = "black", font = 'Helvetica 18', command = self.cancel)
         
         #make label

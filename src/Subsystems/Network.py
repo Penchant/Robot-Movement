@@ -1,12 +1,14 @@
 
 class Network:
-	def __init__(self, hostname, port):
+	def __init__(self, hostname, port, robot):
 		self.socket = socket.socket()
 		self.hostname = hostname
 		self.port = port
 		self.socket.connect((host, port))
 		self.send = ""
 		self.enable = False
+		self.receive = ""
+		self.robot
 
 	def loop_send(self):
 		while(self.enable == True):
@@ -17,6 +19,10 @@ class Network:
 		while(self.enable == True):
 			buf = self.socket.recv(1024)
 			print buf
+			if(buf != ""):
+				self.receive = buf
+			if(buf.lower() == "start"):
+				self.robot.oi.gui.go_button_clicked()
 			pass
 
 	def run(self):

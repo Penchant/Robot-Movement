@@ -38,7 +38,7 @@ class Robot:
 		#port = int(raw_input('Enter the port number: '))
 		port = 6000		
 
-		self.network = Network(host, port)
+		self.network = Network(host, port, self)
 		self.oi = OI(self)
 
 		self.subsystems.append(self.drivetrain)

@@ -1,7 +1,7 @@
 
-from TimedCommand import TimedCommand
+from Command import Command
 
-class TextToSpeechCommand(TimedCommand):
+class TextToSpeechCommand(Command):
 	def __init__(self, text, robot):
 		super(TextToSpeechCommand, self).__init__(2)
 		self.text = text
@@ -10,3 +10,6 @@ class TextToSpeechCommand(TimedCommand):
 
 	def _initialization(self):
 		self.robot.network.send = self.text + '\n'
+
+	def _isFinished(self):
+		return "continue" in self.robot.network.receive.lower() 
