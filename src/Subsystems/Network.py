@@ -1,4 +1,5 @@
 import socket
+import threading
 
 class Network:
 	def __init__(self, hostname, port, robot):
@@ -9,7 +10,7 @@ class Network:
 		self.send = ""
 		self.enable = False
 		self.receive = ""
-		self.robot
+		self.robot = robot
 
 	def loop_send(self):
 		while(self.enable == True):

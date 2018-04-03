@@ -84,8 +84,12 @@ class GUI:
         self.popup.destroy()
 
     def tts_add_command(self):
-        TTS = namedtuple('TTS', ['text', 'robot'])
-        temp = TTS(self.text, self.robot)
+
+        self.parallel = BooleanVar()
+        self.parallel.set(False)
+        TTS = namedtuple('TTS', ['text', 'robot', 'channel', 'parallel'])
+        temp = TTS(self.text, self.robot, -1, False)
+        
         if(self.edit == True):
             self.queuedCommands[self.index - 3] = temp
         else:
@@ -99,7 +103,7 @@ class GUI:
         
         check = ""
         index = self.row_counter
-        if(self.parallel==True):
+        if(self.parallel.get() ==True):
             check = "P"
         if tts == True:
             text = "Text To Speech"
