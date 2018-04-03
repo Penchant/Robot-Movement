@@ -62,6 +62,9 @@ class Scheduler:
             if ((guiCommand.channel == 1) or (guiCommand.channel == 2)):
                 command = SetSpeed(guiCommand.channel, guiCommand.timeout, guiCommand.target, guiCommand.parallel)
                 self.addSequentialCommand(command)
+            else if (guiCommand.channel == -1):
+                command = TextToSpeechCommand(guiCommand.text, guiCommand.robot)
+                self.addParallelCommand(command)
             else:
                 command = SetPosition(guiCommand.channel, guiCommand.target, guiCommand.timeout, guiCommand.parallel)
                 if guiCommand.parallel:
