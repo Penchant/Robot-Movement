@@ -54,6 +54,7 @@ class GUI:
         self.window = tkinter_ref
         self.fb = StringVar(self.window)
         self.scheduler = scheduler
+        self.scheduler.gui = self
         self.queuedCommands = []
         self.target = 0
         self.row_counter = 2
@@ -355,11 +356,7 @@ class GUI:
         print("Frame made")
         drawThread = threading.Thread(None,lambda: self.draw_animation(sm, 100))
         drawThread.start()
-        print("Thread started")
-        time.sleep(duration)
-        print("Wait over")
-        self.gifDisplay = False
-        time.sleep(.1)
+        drawThread.join()
         print("Sleeping over")
         sm.destroy()
         

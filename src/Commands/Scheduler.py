@@ -44,6 +44,10 @@ class Scheduler:
         while (self.enable):
             if not (self.schedule.empty() == True):
                 self.execute()
+            else:
+                if self.current_command != None and self.current_command._isFinished():
+                    self.gui.gifDisplay = False
+                    self.current_command = None
             time.sleep(.01)
         print("Escaped while loop")
         complete = self.current_command._isFinished()
@@ -62,7 +66,7 @@ class Scheduler:
             if ((guiCommand.channel == 1) or (guiCommand.channel == 2)):
                 command = SetSpeed(guiCommand.channel, guiCommand.timeout, guiCommand.target, guiCommand.parallel)
                 self.addSequentialCommand(command)
-            else if (guiCommand.channel == -1):
+            elif (guiCommand.channel == -1):
                 command = TextToSpeechCommand(guiCommand.text, guiCommand.robot)
                 self.addParallelCommand(command)
             else:
