@@ -347,11 +347,11 @@ class GUI:
     def run_animation(self):
         self.gifDisplay = True
         print("Gif displaying")
-        duration = 0
-        for command in self.queuedCommands:
-            duration += (command.timeout/ 1000)
+        #duration = 0
+        #for command in self.queuedCommands:
+        #    duration += (command.timeout/ 1000)
 
-        print("Duration: " + str(duration))
+        #print("Duration: " + str(duration))
         sm = GifFrame()
         print("Frame made")
         drawThread = threading.Thread(None,lambda: self.draw_animation(sm, 100))
