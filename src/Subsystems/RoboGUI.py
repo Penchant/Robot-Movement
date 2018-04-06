@@ -314,12 +314,12 @@ class GUI:
         speech_frame.grid(row=0, column = 0, sticky = "w")
 
         # make buttons
-        option1 = Button(speech_frame, width = 40, text = "Roger, Roger", bg = "white", fg = "black", font='Helvetica 24', command = self.set_speech("Roger, roger"))
-        option2 = Button(speech_frame, width = 40, text = "I find your lack of faith disturbing", bg = "white", fg = "black", font = 'Helvetica 24', command = self.set_speech("I find your lack of faith disturbing"))
-        option3 = Button(speech_frame, width = 40, text = "Nothing to see here, move along", bg = "white", fg = "black", font = 'Helvetica 24', command = self.set_speech("Nothing to see here, move along"))
-        option4 = Button(speech_frame, width = 40, text = "Should I get rid of this meatbag for you?", bg = "white", fg = "black", font = 'Helvetica 24', command = self.set_speech("Should I get rid of this meatbag for you?"))
-        option5 = Button(speech_frame, width = 40, text = "I do believe they think I am some kind of God", bg = "white", fg = "black", font = 'Helvetica 24', command = self.set_speech("I do believe they think I am some kind of deity"))
-        option6 = Button(speech_frame, width = 40, text = "My parts are showing? Oh my goodness", bg = "white", fg = "black", font = 'Helvtica 24', command = self.set_speech("My parts are showing? Oh my goodness"))
+        option1 = Button(speech_frame, width = 40, text = "Roger, Roger", bg = "white", fg = "black", font='Helvetica 24', command = lambda: self.set_speech("Roger, roger"))
+        option2 = Button(speech_frame, width = 40, text = "I find your lack of faith disturbing", bg = "white", fg = "black", font = 'Helvetica 24', command =lambda: self.set_speech("I find your lack of faith disturbing"))
+        option3 = Button(speech_frame, width = 40, text = "Nothing to see here, move along", bg = "white", fg = "black", font = 'Helvetica 24', command =lambda: self.set_speech("Nothing to see here, move along"))
+        option4 = Button(speech_frame, width = 40, text = "Should I get rid of this meatbag for you?", bg = "white", fg = "black", font = 'Helvetica 24', command =lambda: self.set_speech("Should I get rid of this meatbag for you?"))
+        option5 = Button(speech_frame, width = 40, text = "I do believe they think I am some kind of God", bg = "white", fg = "black", font = 'Helvetica 24', command =lambda: self.set_speech("I do believe they think I am some kind of deity"))
+        option6 = Button(speech_frame, width = 40, text = "My parts are showing? Oh my goodness", bg = "white", fg = "black", font = 'Helvtica 24', command = lambda: self.set_speech("My parts are showing? Oh my goodness"))
         add_button = Button(speech_frame, width = 19, height=1, text = "add", bg = "white", fg = "Black", font = 'Helvetica 18', command = lambda: self.tts_add_command())
         cancel_button = Button(speech_frame, width = 19, height = 1, text = "cancel", bg = "white", fg = "black", font = 'Helvetica 18', command = self.cancel)
         
@@ -337,6 +337,7 @@ class GUI:
                      
     def set_speech(self, text):
         self.text = str(text)
+        print(self.text)
         
     def draw_animation(self, sm, delay):
         sm.update()
