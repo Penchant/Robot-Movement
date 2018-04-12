@@ -22,6 +22,7 @@ from Commands.SetPosition import SetPosition
 class Robot:
 	def __init__(self):
 		RobotMap.init()
+		self.direction = "north"
 		self.scheduler = Scheduler()
 		self.subsystems = []
 

@@ -36,7 +36,7 @@ class Scheduler:
                 self.current_command_thread.start()
             except Empty:
                 self.guiQueue = []
-            self.commandNum +=1
+            self.commandNum += 1
 
     def loop(self):
     	self.running = True
