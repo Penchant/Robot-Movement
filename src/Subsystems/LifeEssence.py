@@ -12,9 +12,8 @@ class LifeEssence:
         self.minDam = 2
         self.maxDam = 5
         self.HP = health
-        self.key_obtained = False
 
-    def _combat(self, enemy_minDam, enemy_maxDam, enemy_HP, has_key):
+    def combat(self, enemy_minDam, enemy_maxDam, enemy_HP, has_key):
         self.enemy_minDam = enemy_minDam
         self.enemy_maxDam = enemy_maxDam
         self.enemy_HP = enemy_HP
@@ -39,7 +38,7 @@ class LifeEssence:
         if (self.HP >0 & hasKey == True):
             self.robot.network.send = "I defeated the enemy and took his key"
             sleep(4)
-            self.key_obtained = True
+            self.robot.key_obtained = True
         elif(self.HP > 0 & hasKey == False):
             self.robot.network.send =  "I defeated the enemy but he had no key"
             sleep(4)
@@ -56,11 +55,9 @@ class LifeEssence:
 
     def run(self):
         self.enable = True
-        self.thread = threading.Thread(None, self.loop)
+        self.thread = threading.Thread(None, self.combat)
         self.thread.start()
 
     def disable(self):
         self.enable = False
 
-        self.controller.setSpeed(self.horizontalChannel, 0)
-        self.controller.setSpeed(self.verticalChannel, 0)

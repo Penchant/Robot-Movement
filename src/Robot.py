@@ -10,6 +10,7 @@ from OI import OI
 from Subsystems.Drivetrain import Drivetrain
 from Subsystems.Head import Head 
 from Subsystems.Waist import Waist
+from Subsystems.Navigation import Navigation
 from Subsystems.LifeEssence import LifeEssence
 from Subsystems.Network import Network
 from Commands.Scheduler import Scheduler
@@ -27,6 +28,7 @@ class Robot:
 		self.scheduler = Scheduler()
 		self.subsystems = []
 
+		self.key_obtained = False
 		self.drivetrain = Drivetrain(
 			RobotMap.drivetrainRotateChannel, RobotMap.drivetrainForwardChannel, RobotMap.controller)
 		self.head = Head(
@@ -34,6 +36,7 @@ class Robot:
 		self.waist = Waist(RobotMap.waistChannel, RobotMap.controller)
 
 		self.lifeEssence = LifeEssence(self, 10)
+		self.navigation = Navigation(self)
 
 		#host = raw_input('Enter the hostname:')
 		#host = '192.168.42.129'
@@ -69,6 +72,7 @@ class Robot:
 		#self.scheduler.addSequentialCommand(SetSpeed(2, 1000, 6000))
 		self.scheduler.run()
 		self.network.run()
+		self.navigation.run()
 		self.oi.run()
                 
 		#self.drivetrain.thread.join()

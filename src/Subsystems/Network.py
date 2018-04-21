@@ -22,6 +22,7 @@ class Network:
 		while(self.enable == True):
 			buf = self.socket.recv(1024)
 			print buf
+			self.check_recv(buf)
 			if(buf != ""):
 				self.receive = buf
 			if(buf.lower() == "start"):
@@ -51,86 +52,88 @@ class Network:
 		rotate90Time = 1
 		rotate180Time = 2
 
-		if(buffer.lower().contains("north")):
-			if(self.robot.direction == "north"):
-				self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
-			elif(self.robot.direction == "west"):
-				#Turn left then forward
-				self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate90Time, left))
-				self.robot.scheduler.addParallelCommmand(SetSpeed(forwardChannel, forwardTime, forward))
-			elif(self.robot.direction == "east"):
-				#Turn right then forward
-				self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate90Time, right))
-				self.robot.scheduler.addParallelCommmand(SetSpeed(forwardChannel, forwardTime, forward))
-			elif(self.robot.direction == "south"):
-				#Turn 180 then forward
-				self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate180Time, right))
-				self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
-			self.direction = "north"
+		if buffer.lower() in self.robot.navigation.location.options.keys():
 
-		elif(buffer.lower().contains("south")):
+			if(buffer.lower().contains("north")):
+				if(self.robot.direction == "north"):
+					self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
+				elif(self.robot.direction == "west"):
+					#Turn left then forward
+					self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate90Time, left))
+					self.robot.scheduler.addParallelCommmand(SetSpeed(forwardChannel, forwardTime, forward))
+				elif(self.robot.direction == "east"):
+					#Turn right then forward
+					self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate90Time, right))
+					self.robot.scheduler.addParallelCommmand(SetSpeed(forwardChannel, forwardTime, forward))
+				elif(self.robot.direction == "south"):
+					#Turn 180 then forward
+					self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate180Time, right))
+					self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
+				self.direction = "north"
 
-			if(self.robot.direction == "north"):
-				
-				#Turn 180 then forward
-				self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate180Time, right))
-				self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
+			elif(buffer.lower().contains("south")):
 
-			elif(self.robot.direction == "west"):
-				#Turn right then forward
-				self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate90Time, right))
-				self.robot.scheduler.addParallelCommmand(SetSpeed(forwardChannel, forwardTime, forward))
-			elif(self.robot.direction == "east"):
-				#Turn left then forward
-				self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate90Time, left))
-				self.robot.scheduler.addParallelCommmand(SetSpeed(forwardChannel, forwardTime, forward))
-			elif(self.robot.direction == "south"):
+				if(self.robot.direction == "north"):
 
-				self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
-			self.direction = "south"
-		elif(buffer.lower().contains("west")):
-			if(self.robot.direction == "north"):
-				
-				#Turn right then forward
-				self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate90Time, right))
-				self.robot.scheduler.addParallelCommmand(SetSpeed(forwardChannel, forwardTime, forward))
+					#Turn 180 then forward
+					self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate180Time, right))
+					self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
 
-			elif(self.robot.direction == "west"):
-				self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
+				elif(self.robot.direction == "west"):
+					#Turn right then forward
+					self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate90Time, right))
+					self.robot.scheduler.addParallelCommmand(SetSpeed(forwardChannel, forwardTime, forward))
+				elif(self.robot.direction == "east"):
+					#Turn left then forward
+					self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate90Time, left))
+					self.robot.scheduler.addParallelCommmand(SetSpeed(forwardChannel, forwardTime, forward))
+				elif(self.robot.direction == "south"):
 
-			elif(self.robot.direction == "east"):
-				
-				#Turn 180 then forward
-				self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate180Time, right))
-				self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
-			elif(self.robot.direction == "south"):
+					self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
+				self.direction = "south"
+			elif(buffer.lower().contains("west")):
+				if(self.robot.direction == "north"):
 
-				#Turn left then forward
-				self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate90Time, left))
-				self.robot.scheduler.addParallelCommmand(SetSpeed(forwardChannel, forwardTime, forward))
+					#Turn right then forward
+					self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate90Time, right))
+					self.robot.scheduler.addParallelCommmand(SetSpeed(forwardChannel, forwardTime, forward))
 
-			self.direction = "west"
+				elif(self.robot.direction == "west"):
+					self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
 
-		elif(buffer.lower().contains("east")):
-			if(self.robot.direction == "north"):
-				
-				#Turn left then forward
-				self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate90Time, left))
-				self.robot.scheduler.addParallelCommmand(SetSpeed(forwardChannel, forwardTime, forward))
+				elif(self.robot.direction == "east"):
 
-			elif(self.robot.direction == "west"):
-				#Turn 180 then forward
-				self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate180Time, right))
-				self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
+					#Turn 180 then forward
+					self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate180Time, right))
+					self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
+				elif(self.robot.direction == "south"):
 
-			elif(self.robot.direction == "east"):
-				self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
-			elif(self.robot.direction == "south"):
+					#Turn left then forward
+					self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate90Time, left))
+					self.robot.scheduler.addParallelCommmand(SetSpeed(forwardChannel, forwardTime, forward))
 
-				#Turn right then forward
-				self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate90Time, right))
-				self.robot.scheduler.addParallelCommmand(SetSpeed(forwardChannel, forwardTime, forward))
-			self.direction = "east"
+				self.direction = "west"
+
+			elif(buffer.lower().contains("east")):
+				if(self.robot.direction == "north"):
+
+					#Turn left then forward
+					self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate90Time, left))
+					self.robot.scheduler.addParallelCommmand(SetSpeed(forwardChannel, forwardTime, forward))
+
+				elif(self.robot.direction == "west"):
+					#Turn 180 then forward
+					self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate180Time, right))
+					self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
+
+				elif(self.robot.direction == "east"):
+					self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
+				elif(self.robot.direction == "south"):
+
+					#Turn right then forward
+					self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate90Time, right))
+					self.robot.scheduler.addParallelCommmand(SetSpeed(forwardChannel, forwardTime, forward))
+				self.direction = "east"
 		else:
-			return
-		pass
+			self.send = "That is not a valid direction from here. " + "I see a path to the" + optionsToString(self.location) + "which way do you want go?"
+			pass
