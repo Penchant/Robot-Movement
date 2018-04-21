@@ -29,14 +29,13 @@ class Scheduler:
         if (
                 self.current_command == None or self.current_command._isFinished() or self.current_command.parallel == True):
             try:
-                self.new = False
                 self.current_command = self.schedule.get(True, None)
                 print("Executing command " + str(self.commandNum))
                 self.current_command_thread = threading.Thread(None, self.current_command.run)
                 self.current_command_thread.start()
             except Empty:
                 self.guiQueue = []
-            self.commandNum +=1
+            self.commandNum += 1
 
     def loop(self):
     	self.running = True
