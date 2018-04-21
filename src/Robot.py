@@ -10,6 +10,7 @@ from OI import OI
 from Subsystems.Drivetrain import Drivetrain
 from Subsystems.Head import Head 
 from Subsystems.Waist import Waist
+from Subsystems.LifeEssence import LifeEssence
 from Subsystems.Network import Network
 from Commands.Scheduler import Scheduler
 from Commands.TestCommand import TestCommand
@@ -31,6 +32,8 @@ class Robot:
 		self.head = Head(
 			RobotMap.headHorizontalChannel, RobotMap.headVerticalChannel, RobotMap.controller)
 		self.waist = Waist(RobotMap.waistChannel, RobotMap.controller)
+
+		self.lifeEssence = LifeEssence(self, 10)
 
 		#host = raw_input('Enter the hostname:')
 		#host = '192.168.42.129'
