@@ -6,6 +6,8 @@ from SetSpeed import SetSpeed
 from SetPosition import SetPosition
 from TextToSpeechCommand import TextToSpeechCommand
 import time
+import os, sys
+sys.path.insert(0, os.getcwd())
 
 class Scheduler:
     def __init__(self):
