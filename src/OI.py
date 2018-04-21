@@ -33,7 +33,8 @@ class OI:
 		#self.gui = GUI(self.tk, self.robot.scheduler, self.robot)
                 
 	def run(self):
-		self.gui.main()
+                print("Running OI")
+                self.tk.mainloop()
 	def disable(self):
 		print("Destroying tk")
 		self.tk.destroy()

@@ -4,7 +4,7 @@ import time
 
 import os, sys
 sys.path.insert(0, os.getcwd())
-
+sys.path.insert(0, os.getcwd() + "/Commands")
 from RobotMap import RobotMap
 from OI import OI
 from Subsystems.Drivetrain import Drivetrain
@@ -12,8 +12,9 @@ from Subsystems.Head import Head
 from Subsystems.Waist import Waist
 from Subsystems.Navigation import Navigation
 from Subsystems.LifeEssence import LifeEssence
-from Subsystems.Network import Network
 from Commands.Scheduler import Scheduler
+from Subsystems.Network import Network
+#from Commands.Scheduler import Scheduler
 from Commands.TestCommand import TestCommand
 from Commands.SetSpeed import SetSpeed
 from Commands.SetPosition import SetPosition
@@ -40,8 +41,8 @@ class Robot:
 
 		#host = raw_input('Enter the hostname:')
 		#host = '192.168.42.129'
-		#host = '100.116.13.77'
-                host = '10.152.130.25'
+		host = '100.111.135.187'
+                #host = '10.152.130.25'
                 #host = '10.152.227.236'
 		#host = '100.82.220.120'
 		#port = int(raw_input('Enter the port number: '))
@@ -70,11 +71,12 @@ class Robot:
 		#self.scheduler.addSequentialCommand(TestCommand(5000))
 		#self.scheduler.addSequentialCommand(SetSpeed(1,1000, 6000))
 		#self.scheduler.addSequentialCommand(SetSpeed(2, 1000, 6000))
-		self.scheduler.run()
+
+                self.scheduler.run()
 		self.network.run()
 		self.navigation.run()
 		self.oi.run()
-                
+
 		#self.drivetrain.thread.join()
 		#self.head.thread.join()
 		#self.waist.thread.join()
