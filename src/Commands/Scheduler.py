@@ -47,7 +47,7 @@ class Scheduler:
                 self.execute()
             else:
                 if self.current_command != None and self.current_command._isFinished():
-                    self.gui.gifDisplay = False
+                    #self.gui.gifDisplay = False
                     self.current_command = None
             time.sleep(.01)
         print("Escaped while loop")

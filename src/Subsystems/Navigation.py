@@ -54,6 +54,7 @@ class Navigation():
             while(self.robot.network.receive == ""):
                 time.sleep(.1)
                 pass
+            self.robot.network.receive = ""
 
 
     def optionsToString(self):
