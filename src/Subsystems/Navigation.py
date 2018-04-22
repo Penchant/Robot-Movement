@@ -1,4 +1,4 @@
-from time import time
+import time
 import threading
 from collections import namedtuple
 
@@ -51,7 +51,7 @@ class Navigation():
 
             message = "I see a path to the" + self.optionsToString() + "which way do you want to go\n?"
             self.robot.network.send =  message
-            while(self.robot.network.receive != ""):
+            while(self.robot.network.receive == ""):
                 time.sleep(.1)
                 pass
 
