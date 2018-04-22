@@ -101,7 +101,7 @@ class Network:
 
 					#Turn right then forward
 					self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate90Time, right))
-					self.robot.scheduler.addParallelCommmand(SetSpeed(forwardChannel, forwardTime, forward))
+					self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
 
 				elif(self.robot.direction == "west"):
 					self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
@@ -115,7 +115,7 @@ class Network:
 
 					#Turn left then forward
 					self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate90Time, left))
-					self.robot.scheduler.addParallelCommmand(SetSpeed(forwardChannel, forwardTime, forward))
+					self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
 
 				self.direction = "west"
 
@@ -126,7 +126,7 @@ class Network:
 
 					#Turn left then forward
 					self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate90Time, left))
-					self.robot.scheduler.addParallelCommmand(SetSpeed(forwardChannel, forwardTime, forward))
+					self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
 
 				elif(self.robot.direction == "west"):
 					#Turn 180 then forward
@@ -139,7 +139,7 @@ class Network:
 
 					#Turn right then forward
 					self.robot.scheduler.addParallelCommand(SetSpeed(rotateChannel, rotate90Time, right))
-					self.robot.scheduler.addParallelCommmand(SetSpeed(forwardChannel, forwardTime, forward))
+					self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
 				self.direction = "east"
 		else:
 			self.send = "That is not a valid direction from here. " + "I see a path to the" + self.robot.navigation.optionsToString() + "which way do you want go?\n"

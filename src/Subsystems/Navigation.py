@@ -47,7 +47,7 @@ class Navigation():
                 self.robot.network.send = message
 
             if(self.location.hasEnemy == True):
-                self.robot.lifeEssence.combat(self.location.enemyMinDamage, self.location.enemyMaxDamage, self.enemyMaxDamage, self.location.hasKey)
+                self.robot.lifeEssence.combat(self.location.enemyMinDamage, self.location.enemyMaxDamage, self.location.enemyHealth, self.location.hasKey)
 
             message = "I see a path to the" + self.optionsToString() + "which way do you want to go\n?"
             self.robot.network.send =  message

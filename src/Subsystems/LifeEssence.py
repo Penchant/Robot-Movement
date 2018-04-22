@@ -35,17 +35,17 @@ class LifeEssence:
             self.robot.network.send = "I did " + self.attack + " damage, the enemy has " + enemy.HP + " health remaining.\n"
             time.sleep(6)
 
-        if (self.HP >0 & hasKey == True):
+        if (self.HP >0 & self.has_key == True):
             self.robot.network.send = "I defeated the enemy and took his key\n"
-            sleep(4)
+            time.sleep(4)
             self.robot.key_obtained = True
-        elif(self.HP > 0 & hasKey == False):
+        elif(self.HP > 0 & self.has_key == False):
             self.robot.network.send =  "I defeated the enemy but he had no key\n"
-            sleep(4)
+            time.sleep(4)
             pass
         else:
             self.robot.network.send= "The enemy defeated me. Game Over\n"
-            sleep(4)
+            time.sleep(4)
             self.robot.disable()
             pass
 
