@@ -21,31 +21,32 @@ class LifeEssence:
 
         while (enemy_HP >0 & self.HP > 0):
             #Our robot attacks
-            self.robot.network.send = "I am being attacked"
+            self.robot.network.send = "I am being attacked\n"
             time.sleep(3)
             self.attack = randint(enemy_minDam, enemy_maxDam)
             self.HP = self.HP - attack
-            self.robot.network.send = "The enemy did " + self.attack + " damage, I have " + self.HP + " health remaining."
+            self.robot.network.send = "The enemy did " + self.attack + " damage, I have " + self.HP + " health remaining.\n"
             time.sleep(6)
 
-            self.robot.network.send = "I am being attacked"
+            self.robot.network.send = "I am being attacked\n"
             time.sleep(3)
             self.attack = randint(minDam, maxDam)
             self.enemy_HP = self.enemy_HP - attack
-            self.robot.network.send = "I did " + self.attack + " damage, the enemy has " + enemy.HP + " health remaining."
+            self.robot.network.send = "I did " + self.attack + " damage, the enemy has " + enemy.HP + " health remaining.\n"
             time.sleep(6)
 
         if (self.HP >0 & hasKey == True):
-            self.robot.network.send = "I defeated the enemy and took his key"
+            self.robot.network.send = "I defeated the enemy and took his key\n"
             sleep(4)
             self.robot.key_obtained = True
         elif(self.HP > 0 & hasKey == False):
-            self.robot.network.send =  "I defeated the enemy but he had no key"
+            self.robot.network.send =  "I defeated the enemy but he had no key\n"
             sleep(4)
             pass
         else:
-            self.robot.network.send= "The enemy defeated me. Game Over"
+            self.robot.network.send= "The enemy defeated me. Game Over\n"
             sleep(4)
+            self.robot.disable()
             pass
 
     def loop(self):
