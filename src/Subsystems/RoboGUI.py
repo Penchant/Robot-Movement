@@ -20,8 +20,6 @@ class GifFrame(object):
         self._window.grid_columnconfigure(1, weight = 1)
         self.imageLabel2 = Label(self._window, image=self.imageGIF2)
         self.imageLabel2.grid(column=1,row=1)
-        
-        
 
     def update(self):
         try:
