@@ -55,6 +55,8 @@ class Network:
 		if buffer.lower() in self.robot.navigation.location.options.keys():
 
 			if(buffer.lower() in "north"):
+				self.robot.navigation.location = self.robot.navigation.location.options["north"]
+
 				if(self.robot.direction == "north"):
 					self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
 				elif(self.robot.direction == "west"):
@@ -72,6 +74,7 @@ class Network:
 				self.direction = "north"
 
 			elif(buffer.lower() in "south"):
+				self.robot.navigation.location = self.robot.navigation.location.options["south"]
 
 				if(self.robot.direction == "north"):
 
@@ -92,6 +95,8 @@ class Network:
 					self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
 				self.direction = "south"
 			elif(buffer.lower() in "west"):
+				self.robot.navigation.location = self.robot.navigation.location.options["west"]
+
 				if(self.robot.direction == "north"):
 
 					#Turn right then forward
@@ -115,6 +120,8 @@ class Network:
 				self.direction = "west"
 
 			elif(buffer.lower() in "east"):
+				self.robot.navigation.location = self.robot.navigation.location.options["east"]
+
 				if(self.robot.direction == "north"):
 
 					#Turn left then forward
