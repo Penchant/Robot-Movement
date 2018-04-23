@@ -2,14 +2,24 @@ import time
 import threading
 from recordclass import recordclass
 
+class Node():
+    __init__(self, options, hasRestore, hasGold,
+            hasKey, hasEnemy, enemyHealth, enemyMinDamage, enemyMaxDamage):
+        self.options = options
+        self.hasRestore = hasRestore
+        self.hasGold = hasGold
+        self.hasKey = hasKey
+        self.hasEnemy = hasEnemy
+        self.enemyHealth = enemyHealth
+        self.enemyMinDamage = enemyMinDamage
+        self.enemyMaxDamage = enemyMaxDamage
+
 class Navigation():
 
     def __init__(self, robot):
         self.robot = robot
         self.enable = False
 
-        Node = recordclass('Node', ['options', 'hasRestore', 'hasGold',
-            'hasKey', 'hasEnemy', 'enemyHealth', 'enemyMinDamage', 'enemyMaxDamage'])
         intersection1 = Node ({}, False, False, False, False, 0, 0, 0)
         intersection2 = Node ({}, False, True, False, False, 0, 0, 0)
         intersection3 = Node ({}, False, False, False, True, 5, 1, 3)
