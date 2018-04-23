@@ -1,6 +1,6 @@
 import time
 import threading
-from collections import namedtuple
+from recordclass import recordclass
 
 class Navigation():
 
@@ -8,7 +8,7 @@ class Navigation():
         self.robot = robot
         self.enable = False
 
-        Node = namedtuple('Node', ['options', 'hasRestore', 'hasGold',
+        Node = recordclass('Node', ['options', 'hasRestore', 'hasGold',
             'hasKey', 'hasEnemy', 'enemyHealth', 'enemyMinDamage', 'enemyMaxDamage'])
         intersection1 = Node ({}, False, False, False, False, 0, 0, 0)
         intersection2 = Node ({}, False, True, False, False, 0, 0, 0)
