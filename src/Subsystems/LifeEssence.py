@@ -20,6 +20,7 @@ class LifeEssence:
         self.has_key = has_key
 
         while (enemy_HP >0 & self.HP > 0):
+            print("Attacking")
             #Our robot attacks
             self.robot.network.send = "I am being attacked\n"
             time.sleep(3)
@@ -35,6 +36,7 @@ class LifeEssence:
             self.robot.network.send = "I did " + self.attack + " damage, the enemy has " + enemy.HP + " health remaining.\n"
             time.sleep(6)
 
+        print("Attacking is over")
         if (self.HP >0 & self.has_key == True):
             self.robot.network.send = "I defeated the enemy and took his key\n"
             time.sleep(4)

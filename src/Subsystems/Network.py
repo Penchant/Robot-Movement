@@ -23,10 +23,11 @@ class Network:
 			buf = self.socket.recv(1024)
 			print buf
 			self.check_recv(buf)
+			print ("After check: " + buf) 
 			if(buf != ""):
 				self.receive = buf
 			if(buf.lower() == "start"):
-				self.robot.oi.gui.go_button_clicked()
+				#self.robot.oi.gui.go_button_clicked()
 			pass
 
 
@@ -56,6 +57,7 @@ class Network:
 
 			if(buffer.lower() in "north"):
 				self.robot.navigation.location = self.robot.navigation.location.options["north"]
+				print self.robot.navigation.location
 
 				if(self.robot.direction == "north"):
 					self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
@@ -75,6 +77,7 @@ class Network:
 
 			elif(buffer.lower() in "south"):
 				self.robot.navigation.location = self.robot.navigation.location.options["south"]
+				print self.robot.navigation.location
 
 				if(self.robot.direction == "north"):
 
@@ -96,6 +99,7 @@ class Network:
 				self.direction = "south"
 			elif(buffer.lower() in "west"):
 				self.robot.navigation.location = self.robot.navigation.location.options["west"]
+				print self.robot.navigation.location
 
 				if(self.robot.direction == "north"):
 
@@ -121,6 +125,7 @@ class Network:
 
 			elif(buffer.lower() in "east"):
 				self.robot.navigation.location = self.robot.navigation.location.options["east"]
+				print self.robot.navigation.location
 
 				if(self.robot.direction == "north"):
 
