@@ -25,7 +25,7 @@ from Commands.SetPosition import SetPosition
 class Robot:
 	def __init__(self):
 		RobotMap.init()
-		self.direction = "north"
+		self.direction = "south"
 		self.scheduler = Scheduler()
 		self.subsystems = []
 
@@ -41,7 +41,7 @@ class Robot:
 
 		#host = raw_input('Enter the hostname:')
 		#host = '192.168.42.129'
-		host = '100.96.45.213'
+		host = '127.0.0.1'
                 #host = '10.152.130.25'
                 #host = '10.152.227.236'
 		#host = '100.82.220.120'
@@ -49,12 +49,15 @@ class Robot:
 		port = 6000		
 
 		self.network = Network(host, port, self)
+		print("Network made1")
 		self.oi = OI(self)
-
+		print("OI made")
 		self.subsystems.append(self.drivetrain)
 		self.subsystems.append(self.head)
 		self.subsystems.append(self.waist)
 		self.subsystems.append(self.network)
+		self.subsystems.append(self.navigation)
+		self.subsystems.append(self.lifeEssence)
 
 		self.robotInit = True
 
@@ -71,8 +74,9 @@ class Robot:
 		#self.scheduler.addSequentialCommand(TestCommand(5000))
 		#self.scheduler.addSequentialCommand(SetSpeed(1,1000, 6000))
 		#self.scheduler.addSequentialCommand(SetSpeed(2, 1000, 6000))
-
+		
                 self.scheduler.run()
+                
 		self.network.run()
 		self.navigation.run()
 		self.oi.run()

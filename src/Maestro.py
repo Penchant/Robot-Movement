@@ -1,4 +1,9 @@
-import serial
+try:
+    import serial
+    useSerial = True
+except ImportError:
+    useSerial = False
+    pass
 from sys import version_info
 import sys
 import threading
@@ -33,7 +38,9 @@ class Controller:
     # example, '/dev/ttyACM2' or for Windows, something like 'COM3'.
     def __init__(self,ttyStr='/dev/ttyACM0',device=0x0c):
         # Open the command port
-        self.usb = serial.Serial(ttyStr)
+        global useSerial
+        if useSerial == True:
+            self.usb = serial.Serial(ttyStr)
         # Command lead-in and device number are sent for each Pololu serial command.
         self.PololuCmd = chr(0xaa) + chr(device)
         # Track target position for each servo. The function isMoving() will
@@ -96,7 +103,9 @@ class Controller:
         clsb = chr(lsb)
         cmsb = chr(msb)
         cmd = chr(0x04) + chr(chan) + chr(lsb) + chr(msb)
-        self.sendCmd(cmd)
+        global useSerial
+        if useSerial == True:
+            self.sendCmd(cmd)
         # Record Target value
         self.Targets[chan] = target
         

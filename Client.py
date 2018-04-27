@@ -30,7 +30,7 @@ class Network:
 		recv.start()
 
 #host = raw_input('Enter the hostname:')
-host = '192.168.42.129'
+host = '127.00.00.1'
 #host = '10.152.227.236'
 #host = '100.82.220.120'
 #port = int(raw_input('Enter the port number: '))

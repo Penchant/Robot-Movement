@@ -28,7 +28,7 @@ class Network:
 				self.receive = buf
 			if(buf.lower() == "start"):
 				#self.robot.oi.gui.go_button_clicked()
-			pass
+				pass
 
 
 	def run(self):
@@ -53,11 +53,17 @@ class Network:
 		rotate90Time = 1
 		rotate180Time = 2
 
-		if buffer.lower() in self.robot.navigation.location.options.keys():
+		valid_direction = False
+		for key in self.robot.navigation.location.options.keys():
+			if key in buffer.lower():
+				valid_direction = True
 
-			if(buffer.lower() in "north"):
+
+		if valid_direction == True:
+
+			if("north" in buffer.lower()):
 				self.robot.navigation.location = self.robot.navigation.location.options["north"]
-				print self.robot.navigation.location
+				print self.robot.navigation.location.options
 
 				if(self.robot.direction == "north"):
 					self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
@@ -75,9 +81,9 @@ class Network:
 					self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
 				self.direction = "north"
 
-			elif(buffer.lower() in "south"):
+			elif("south" in buffer.lower()):
 				self.robot.navigation.location = self.robot.navigation.location.options["south"]
-				print self.robot.navigation.location
+				print self.robot.navigation.location.options
 
 				if(self.robot.direction == "north"):
 
@@ -97,9 +103,9 @@ class Network:
 
 					self.robot.scheduler.addParallelCommand(SetSpeed(forwardChannel, forwardTime, forward))
 				self.direction = "south"
-			elif(buffer.lower() in "west"):
+			elif("west" in buffer.lower()):
 				self.robot.navigation.location = self.robot.navigation.location.options["west"]
-				print self.robot.navigation.location
+				print self.robot.navigation.location.options
 
 				if(self.robot.direction == "north"):
 
@@ -123,9 +129,9 @@ class Network:
 
 				self.direction = "west"
 
-			elif(buffer.lower() in "east"):
+			elif("east" in buffer.lower()):
 				self.robot.navigation.location = self.robot.navigation.location.options["east"]
-				print self.robot.navigation.location
+				print self.robot.navigation.location.options
 
 				if(self.robot.direction == "north"):
 
